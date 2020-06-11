@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <title>Covid Evolution Diff</title>
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    <style>
+      * {
+        color: #24292e;
+      }
+      .table-sm {
+        font-size: 0.8rem;
+      }
+      .table-sm td {
+        padding: 0.15rem;
+      }
+      .diff-deletion-number,
+      .diff-addition-number,
+      .diff-neutral-number,
+      .diff-info-number {
+        text-align: center;
+        max-width: 70px;
+        width: 50px;
+      }
+      .diff-deletion-content,
+      .diff-addition-content {
+        padding: 2px;
+        border-radius: 2px;
+      }
+      .diff-info-row {
+        background-color: #f1f8ff;
+      }
+      .diff-info-row * {
+        min-height: 10px;
+        height: 10px;
+        color: #666;
+      }
+      .diff-info-number {
+        background-color: #dbedff;
+      }
+      .diff-deletion-number {
+        background-color: #ffdce0;
+      }
+      .diff-deletion-row {
+        background-color: #ffecee;
+      }
+      .diff-deletion-content {
+        background-color: #fdb8c0;
+      }
+      .diff-addition-number {
+        background-color: #cdffd8;
+      }
+      .diff-addition-row {
+        background-color: #e6ffed;
+      }
+      .diff-addition-content {
+        background-color: #acf2bd;
+      }
+      .diff-neutral-number {
+        background-color: #f3f3f3;
+      }
+      .diff-neutral-row {
+        background-color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <table class="table table-borderless table-sm border border-light">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col" colspan="3">
+            Comparing changes for covid19spreading.rdf. Base Tag: $tagBase |
+            Compare Tag: $tagCompare
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        $diffRows
+      </tbody>
+    </table>
+  </body>
+</html>

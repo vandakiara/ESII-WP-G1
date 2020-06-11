@@ -3,17 +3,19 @@ import io.vertx.core.Vertx;
 public class CovidEvolutionDiffMain {
 
 	public static void main(String[] args) {
-		ConnGit git = new ConnGit();
-		git.getDiff();
-		
-//		Vertx.vertx()
-//        .createHttpServer()
-//        .requestHandler(request -> {
-//            request.response()
-//                   .putHeader("content-type", "text/html")
-//                   .end("<h1>Olá cancro! :)</h1>");
-//        })
-//        .listen(3000);
+		Vertx.vertx()
+        .createHttpServer()
+        .requestHandler(request -> {
+        	ConnGit git = new ConnGit();
+        	GitDiff diff = git.getDiff();
+        	
+        	HtmlDiffBuilder diffHtmlBuilder = new HtmlDiffBuilder();
+        	String diffHtml = diffHtmlBuilder.buildDiffPage(diff);
+            request.response()
+                   .putHeader("content-type", "text/html")
+                   .end(diffHtml);
+        })
+        .listen(3000);
 
 	}
 

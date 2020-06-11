@@ -1,6 +1,16 @@
 
 public enum DiffType {
-	ADDITION,
-	DELETION,
-	NEUTRAL
+	ADDITION("addition"),
+	DELETION("deletion"),
+	NEUTRAL("neutral");
+
+	private String str;
+
+	private DiffType(String str) {
+		this.str = str;
+	}
+
+	public String getStr() {
+		return str;
+	}
 }
