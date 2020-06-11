@@ -151,7 +151,8 @@ public class ConnGit {
 				String d = lines[j];
 				DiffType type = d.indexOf('-') == 0 ? DiffType.DELETION
 						: d.indexOf('+') == 0 ? DiffType.ADDITION : DiffType.NEUTRAL;
-				chunk.add(new GitDiffChunk(countDeleted, countAddition, type, d));
+				chunk.add(new GitDiffChunk(countAddition, countDeleted, type, d));
+				
 				switch (type) {
 				case DELETION:
 					countDeleted++;
