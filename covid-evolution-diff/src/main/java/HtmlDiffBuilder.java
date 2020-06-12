@@ -15,25 +15,18 @@ public class HtmlDiffBuilder {
 		htmlPage = htmlPage.replace("$tagBase", diff.tagBase);
 		htmlPage = htmlPage.replace("$tagCompare", diff.tagCompare);
 
-		List<List<GitDiffChunk>> diffChunks = diff.chunks;
+		List<GitDiffChunk> diffChunks = diff.chunks;
 		String diffTableRows = "";
-		for (List<GitDiffChunk> chunks : diffChunks) {
-			diffTableRows += "<tr class=\"diff-info-row\">\n" + 
-					"        <td class=\"diff-info-number\"></td>\n" + 
-					"        <td class=\"diff-info-number\"></td>\n" + 
-					"        <td ></td>\n" + 
+		for (GitDiffChunk chunk : diffChunks) {
+			String deletionNumber = chunk.type == DiffType.DELETION || chunk.type == DiffType.NEUTRAL ? Integer.toString(chunk.lineDeletion) : "";
+			String additionNumber = chunk.type == DiffType.ADDITION || chunk.type == DiffType.NEUTRAL ? Integer.toString(chunk.lineAddition) : "";
+			String type = chunk.type.getStr();
+			String line = chunk.line.replaceAll("\\s", "&nbsp;").replace("<", "&lt;").replace(">", "&gt;");
+			diffTableRows += "<tr class=\"diff-"+ type +"-row\">\n" + 
+					"        <td class=\"diff-"+ type +"-number\">"+deletionNumber+"</td>\n" + 
+					"        <td class=\"diff-"+ type +"-number\">"+additionNumber+"</td>\n" + 
+					"        <td>"+ line + "</td>\n" + 
 					"      </tr>\n";
-			for (GitDiffChunk chunk : chunks) {
-				String deletionNumber = chunk.type == DiffType.DELETION || chunk.type == DiffType.NEUTRAL ? Integer.toString(chunk.lineDeletion) : "";
-				String additionNumber = chunk.type == DiffType.ADDITION || chunk.type == DiffType.NEUTRAL ? Integer.toString(chunk.lineAddition) : "";
-				String type = chunk.type.getStr();
-				String line = chunk.line.replaceAll("\\s", "&nbsp;").replace("<", "&lt;").replace(">", "&gt;");
-				diffTableRows += "<tr class=\"diff-"+ type +"-row\">\n" + 
-						"        <td class=\"diff-"+ type +"-number\">"+deletionNumber+"</td>\n" + 
-						"        <td class=\"diff-"+ type +"-number\">"+additionNumber+"</td>\n" + 
-						"        <td>"+ line + "</td>\n" + 
-						"      </tr>\n";
-			}
 		}
 
 		htmlPage = htmlPage.replace("$diffRows", diffTableRows);
