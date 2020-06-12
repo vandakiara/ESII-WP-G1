@@ -7,7 +7,7 @@ import org.apache.commons.io.FileUtils;
 public class HtmlDiffBuilder {
 	
 	public String buildDiffPage(GitDiff diff) {
-		File htmlTemplateFile = new File("diff-template.html");
+		File htmlTemplateFile = new File("assets/diff-template.html");
 		
 		String htmlString = null;
 		try {
