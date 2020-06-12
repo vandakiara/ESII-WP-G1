@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
+
 import org.jdom.Element;
 import pl.edu.icm.cermine.ContentExtractor;
 import pl.edu.icm.cermine.exception.AnalysisException;
@@ -38,7 +40,7 @@ public class PDF_Extractor {
 		System.out.println("PDF file list is complete.");
 		System.out.println("++++++++++++++++++++++++++++++\n");
 	}
-	
+
 	public void populateElementList() {
 		System.out.println("++++++++++++++++++++++++++++++");
 		System.out.println("Starting to extract the metadata...");
@@ -73,16 +75,49 @@ public class PDF_Extractor {
 		}
 		return result;
 	}
-	
-	public void printAllXML() {
+
+	public String[][] getTable() {
+		// Article title, Journal name, Publication year and Authors
+		String[][] table = new String[4][metadataList.size() + 1];
+		table[0][0] = "Article title";
+		table[1][0] = "Journal name";
+		table[2][0] = "Publication year";
+		table[3][0] = "Authors";
+
+		int count = 1;
 		for (Element ele : metadataList) {
-			System.out.println("Starting to print all XML information... \n");
-			System.out.println(ele.getChild("front")
-					.getChild("journal-meta")
-					.getChild("journal-title-group")
+			table[0][count] = ele.getChild("front").getChild("article-meta").getChild("title-group")
+					.getChildText("article-title");
+			table[1][count] = ele.getChild("front").getChild("journal-meta").getChild("journal-title-group")
+					.getChildText("journal-title");
+			table[2][count] = ele.getChild("front").getChild("article-meta").getChild("pub-date").getChildText("year");
+			List<Element> authors = ele.getChild("front").getChild("article-meta").getChild("contrib-group").getChildren();
+			table[3][count] = concatenateAuthors(authors);
+			count++;
+		}
+		return table;
+	}
+
+	public String concatenateAuthors(List<Element> authors) {
+		String authorString = "";
+		int count = 0;
+		for (Element ele : authors) {
+			if (ele.getChildText("string-name") != null) {
+				if (count != 0)
+					authorString += " & ";
+				authorString += ele.getChildText("string-name");
+				count++;
+			}
+		}
+		return authorString;
+	}
+
+	public void printAllXML() {
+		System.out.println("Starting to print all XML information...");
+		for (Element ele : metadataList) {
+			System.out.println(ele.getChild("front").getChild("journal-meta").getChild("journal-title-group")
 					.getChildText("journal-title"));
-			
 		}
 	}
-	
+
 }

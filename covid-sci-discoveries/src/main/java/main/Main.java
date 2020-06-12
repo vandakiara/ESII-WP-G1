@@ -1,5 +1,6 @@
 package main;
 
+import html.HTMLTableBuilder;
 import pdf.extractor.PDF_Extractor;
 
 public class Main {
@@ -8,7 +9,9 @@ public class Main {
 		PDF_Extractor extractor = new PDF_Extractor("D:\\University\\ES II\\PDFs");
 		extractor.populateFilesList();
 		extractor.populateElementList();
-		extractor.printAllXML();
+		String[][] table = extractor.getTable();
+		HTMLTableBuilder HTMLTable = new HTMLTableBuilder(null, false, 4, 4);
+		System.out.println(HTMLTable.buildTable(table));
 	}
 
 }

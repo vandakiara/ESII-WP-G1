@@ -34,6 +34,37 @@ public class HTMLTableBuilder {
 		table.append(HTML_END);
 	}
 
+	public String buildTable(String[][] table) {
+		int counter = 0;
+		int numberOfColumns = table.length;
+		String[] headers = new String[numberOfColumns];
+		
+		while(counter < numberOfColumns) {
+			headers[counter] = table[counter][0];
+			counter++;
+		}
+		addTableHeader(headers);
+		
+		
+		int columnCounter = 0;
+		int rowCounter = 1;
+		String[] data = new String[numberOfColumns];
+		
+		while(rowCounter < table[0].length) {
+			while(columnCounter < numberOfColumns) {
+				 data[columnCounter] = table[columnCounter][rowCounter];
+				 columnCounter++;
+			}
+			columnCounter = 0;
+			this.addRowValues(data);
+			data = new String[numberOfColumns];
+			rowCounter++;
+		}
+
+		
+		return this.build();
+	}
+	
 	/**
 	 * @param values
 	 */
