@@ -27,8 +27,9 @@ public class ConnGit {
 	Repository repository;
 	Git git;
 
-	public void getDiff() {
+	public GitDiff getDiff() {
 		File localPathFile = null;
+		List<List<GitDiffChunk>> parsedDiff = null;
 		try {
 			localPathFile = File.createTempFile(LOCAL_PATH, "");
 			if (!localPathFile.delete()) {
@@ -50,9 +51,7 @@ public class ConnGit {
 		}
 		int size = tagArray.length;
 		Ref tagLatest = size > 0 ? (Ref) tagArray[size - 1] : null;
-		System.out.println("tagLatest: " + tagLatest);
 		Ref tagPrevious = size > 1 ? (Ref) tagArray[size - 2] : null;
-		System.out.println("tagPrevious: " + tagPrevious);
 
 		// the diff works on TreeIterators, we prepare two for the two branches
 		AbstractTreeIterator oldTreeParser = null;
@@ -78,7 +77,6 @@ public class ConnGit {
 			e.printStackTrace();
 		}
 		for (DiffEntry entry : diff) {
-			System.out.println("Entry: " + entry + ", from: " + entry.getOldId() + ", to: " + entry.getNewId());
 			OutputStream output = new OutputStream() {
 				private StringBuilder string = new StringBuilder();
 
@@ -91,6 +89,7 @@ public class ConnGit {
 					return this.string.toString();
 				}
 			};
+			
 			try (DiffFormatter formatter = new DiffFormatter(output)) {
 				formatter.setRepository(repository);
 
@@ -100,19 +99,19 @@ public class ConnGit {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				System.out.println("Output: " + output);
-				System.out.println("Parser: ");
-				getDiffChunks(output.toString());
+				parsedDiff = getDiffChunks(output.toString());
 			}
 		}
 
 		git.close();
+		String tagBase = tagPrevious.getName().replaceAll("refs/tags/", "");
+		String tagCompare = tagLatest.getName().replaceAll("refs/tags/", "");
+		return new GitDiff(tagBase, tagCompare, parsedDiff);
 	}
 
 	private static AbstractTreeIterator prepareTreeParser(Repository repository, String objectId) throws IOException {
-		// from the commit we can build the tree which allows us to construct the
-		// TreeParser
-		// noinspection Duplicates
+		// from the tag we can, build the tree which allows to construct the
+		// TreeParser for doing the diff
 		try (RevWalk walk = new RevWalk(repository)) {
 			RevCommit commit = walk.parseCommit(ObjectId.fromString(objectId));
 			RevTree tree = walk.parseTree(commit.getTree().getId());
@@ -137,7 +136,6 @@ public class ConnGit {
 
 		for (int i = 1; i < diffStrs.length; i++) {
 			String diffBlock = diffStrs[i];
-			System.out.println("Block: " + diffBlock);
 			String[] lines = diffBlock.split("\n");
 			if (lines.length < 2) {
 				continue;
@@ -153,7 +151,8 @@ public class ConnGit {
 				String d = lines[j];
 				DiffType type = d.indexOf('-') == 0 ? DiffType.DELETION
 						: d.indexOf('+') == 0 ? DiffType.ADDITION : DiffType.NEUTRAL;
-				chunk.add(new GitDiffChunk(countDeleted, countAddition, type, d));
+				chunk.add(new GitDiffChunk(countAddition, countDeleted, type, d));
+				
 				switch (type) {
 				case DELETION:
 					countDeleted++;
@@ -170,12 +169,6 @@ public class ConnGit {
 			chunks.add(chunk);
 		}
 
-		for (List<GitDiffChunk> chunk : chunks) {
-			System.out.println("Chunk:");
-			for (GitDiffChunk c : chunk) {
-				System.out.println(c);
-			}
-		}
 		return chunks;
 	}
 

@@ -220,7 +220,14 @@ Please upgrade your version of WP Google Maps to version 6.0.27 as it includes m
 
 == Changelog ==
 
-= 8.0.23 :- 2020-05-06 =
+= 8.0.24 :- 2020-06-10 =
+* Added fallback for datatables when language file cannot be loaded
+* Plugin now loads unminified version of text.js due to IE issues with minified version
+* Notice is issued for users using expired Cloud API keys
+* Fixed __isset returning false for ID on Crud class
+* Fixed notice in Gutenberg module when passing array shortcode attributes
+
+= 8.0.23 :- 2020-05-07 =
 * Added experimental integrity check class (currently unused)
 * Added links to settings tabs in "No API key" message
 * Tested up to WordPress 5.4.1
@@ -1473,6 +1480,8 @@ Please upgrade your version of WP Google Maps to version 6.0.27 as it includes m
 
 
 For more, please view the WP Google Maps site
+
+
 
 
 

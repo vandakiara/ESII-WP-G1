@@ -41,6 +41,7 @@ class Plugin extends Factory
 	private $_gutenbergIntegration;
 	private $_pro7Compatiblity;
 	private $_dynamicTranslations;
+	private $_legacyCloudAPIKeyHandler;
 	private $_spatialFunctionPrefix = '';
 	
 	protected $scriptLoader;
@@ -195,6 +196,7 @@ class Plugin extends Factory
 	public function onInit()
 	{
 		$this->_gdprCompliance = new GDPRCompliance();
+		$this->_legacyCloudAPIKeyHandler = new LegacyCloudAPIKeyHandler();
 	}
 	
 	/**

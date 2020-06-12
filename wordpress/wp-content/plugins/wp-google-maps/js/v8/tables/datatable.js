@@ -50,7 +50,15 @@ jQuery(function($) {
 
 				success: function(response, status, xhr)
 				{
-					self.languageJSON = response;
+					self.languageJSON = response; // TODO: This doesn't appear to go anywhere
+					
+					self.dataTable = $(self.dataTableElement).DataTable(settings);
+					self.dataTable.ajax.reload();
+				},
+				
+				error: function()
+				{
+					// TODO: Use complete instead
 					self.dataTable = $(self.dataTableElement).DataTable(settings);
 					self.dataTable.ajax.reload();
 				}
