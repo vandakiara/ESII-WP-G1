@@ -1,8 +1,9 @@
-package github;
+package git;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -23,7 +24,7 @@ public class CovidGraphSpread {
 	private RevWalk walk;
 	private Repository repository;
 	private Git git;
-	private ArrayList<DataTable> row = new ArrayList<DataTable>();
+	private static ArrayList<DataTable> row = new ArrayList<DataTable>();
 	private int id = 0;
 	private TreeWalk treeWalk;
 
@@ -32,7 +33,6 @@ public class CovidGraphSpread {
 	public void connectionGit() throws GitAPIException {
 		connection();
 		tagList();
-		buildTableHTML(row);
 		git.close();
 	}
 
@@ -56,21 +56,15 @@ public class CovidGraphSpread {
 					    } else {
 					    	String tagName = ref.getName().replace("refs/tags/", "");
 					    	String spreadVisualizationLink = link.replace("master", tagName);
-					    	DataTable data = new DataTable(commitTag2.getAuthorIdent().getWhen(),treeWalk.getPathString(),
+					    	DataTable data = new DataTable(new Date(commitTag2.getCommitTime() * 1000L).toString(),treeWalk.getPathString(),
 					    	tagName, commitTag2.getShortMessage(), spreadVisualizationLink);
 					    	row.add(data);
-					    	/*System.out.println("id: " + id);
-			                System.out.println("File timestamp: " + commitTag2.getAuthorIdent().getWhen());
-			                System.out.println("File name: " + treeWalk.getPathString());
-			                System.out.println("File tag: " + tagName);
-			                System.out.println("Tag Description: " + commitTag2.getShortMessage());
-			                System.out.println("Spread Visualization Link: " + spreadVisualizationLink);
-			                System.out.println("---------------------------------------------------------------------");*/
 			                id = id + 1;
 					    }
 					}
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
+					System.out.println("SIm");
 					e1.printStackTrace();
 				}
 	        }
@@ -107,6 +101,7 @@ public class CovidGraphSpread {
 		// TODO Auto-generated method stub
 		CovidGraphSpread covidGraphSpread = new CovidGraphSpread();
 		covidGraphSpread.connectionGit();
+		covidGraphSpread.buildTableHTML(row);
 	}
 
 }

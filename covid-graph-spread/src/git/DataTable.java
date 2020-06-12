@@ -1,29 +1,29 @@
-package github;
+package git;
 
 import java.util.Date;
 
 public class DataTable {
 	
-	private Date fileTimeStamp;
+	private String fileTimeStamp;
 	private String fileName;
 	private String fileTag;
 	private String tagDescription;
 	private String spreadVisualizationLink;
 	
-	public DataTable (Date date, String fileName, String fileTag, 
+	public DataTable (String string, String fileName, String fileTag, 
 			String tagDescription, String spreadVisualizationLink) {
-		this.fileTimeStamp = date;
+		this.fileTimeStamp = string;
 		this.fileName = fileName;
 		this.fileTag = fileTag;
 		this.tagDescription = tagDescription;
 		this.spreadVisualizationLink = spreadVisualizationLink;
 	}
 	
-	public Date getFileTimeStamp() {
+	public String getFileTimeStamp() {
 		return fileTimeStamp;
 	}
 
-	public void setFileTimeStamp(Date fileTimeStamp) {
+	public void setFileTimeStamp(String fileTimeStamp) {
 		this.fileTimeStamp = fileTimeStamp;
 	}
 
