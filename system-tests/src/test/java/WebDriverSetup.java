@@ -20,7 +20,7 @@ public class WebDriverSetup {
     public static WebDriver driver;
 
     /**
-     * URL to be used for tests - the hostname defined in docker and the port for the wordpress container.
+     * URL to be used for tests - the localhost (equivalent to the host's IP) and the port for the wordpress container.
      */
     public static final String baseUrl = "http://" + getDetectedDockerHostIp() + ":" + TestProperties.WP_PORT;
 
