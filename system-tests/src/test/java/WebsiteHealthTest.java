@@ -23,11 +23,11 @@ public class WebsiteHealthTest extends WebDriverSetup {
 
         driver.findElement(By.id("menu-item-56")).findElement(By.tagName("a")).click();
 
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
-        WebElement covidPageTitle = driver.findElement(By.id("intro-core")).findElement(By.tagName("h1"));
+        WebElement covidPageTitle = driver.findElement(By.cssSelector("#intro-core > h1 > span"));
 
-        assert(covidPageTitle.getText().contains("Covid Evolution"));
+        assert(covidPageTitle.getAttribute("innerHTML").contains("Covid Evolution"));
     }
 
 

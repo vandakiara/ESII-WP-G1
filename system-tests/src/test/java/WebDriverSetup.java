@@ -1,16 +1,14 @@
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.testcontainers.DockerClientFactory;
-import org.testcontainers.containers.BrowserWebDriverContainer;
-import org.testcontainers.dockerclient.DockerClientConfigUtils;
-import org.testcontainers.dockerclient.LogToStringContainerCallback;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.shaded.org.apache.commons.lang.StringUtils;
 
-import java.util.Optional;
-
+/**
+ * The setup for selenium and the chrome webdriver.
+ * @author Vanda Barata (vsfba1@iscte-iul.pt)
+ */
 @Testcontainers
 public class WebDriverSetup {
 
@@ -22,43 +20,28 @@ public class WebDriverSetup {
     /**
      * URL to be used for tests - the localhost (equivalent to the host's IP) and the port for the wordpress container.
      */
-    public static final String baseUrl = "http://" + getDetectedDockerHostIp() + ":" + TestProperties.WP_PORT;
-
-    /**
-     * The container with the chrome browser and webdriver for Selenium.
-     */
-    @Container
-    public static final BrowserWebDriverContainer BROWSER_CONTAINER =
-            new BrowserWebDriverContainer("selenium/standalone-chrome-debug").withCapabilities(new ChromeOptions());
+    public static final String baseUrl = "http://" + TestProperties.HOSTNAME + ":" + TestProperties.WP_PORT;
 
     @BeforeAll
-    public static void configureBrowser() {
-        driver = BROWSER_CONTAINER.getWebDriver();
+    public static void setUp() throws Exception {
+        System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver");
+
+        ChromeOptions options = new ChromeOptions();
+        // options.addArguments("--headless"); // to run without graphical mode
+        options.addArguments("start-maximized"); // https://stackoverflow.com/a/26283818/1689770
+        options.addArguments("enable-automation"); // https://stackoverflow.com/a/43840128/1689770
+        options.addArguments("--no-sandbox"); //https://stackoverflow.com/a/50725918/1689770
+        options.addArguments("--disable-infobars"); //https://stackoverflow.com/a/43840128/1689770
+        options.addArguments("--disable-dev-shm-usage"); //https://stackoverflow.com/a/50725918/1689770
+        options.addArguments("--disable-browser-side-navigation"); //https://stackoverflow.com/a/49123152/1689770
+        options.addArguments("--disable-gpu"); //https://stackoverflow.com/questions/51959986/how-to-solve-selenium-chromedriver-timed-out-receiving-message-from-renderer-exc
+
+        driver = new ChromeDriver(options);
     }
 
-    /**
-     * Taken from {@link DockerClientConfigUtils#getDetectedDockerHostIp()} but removed
-     * {@link DockerClientConfigUtils#IN_A_CONTAINER} because this always reports false.
-     *
-     * @return the ip address for the browser to connect to.
-     */
-    private static String getDetectedDockerHostIp() {
-        return Optional.ofNullable(DockerClientFactory.instance().runInsideDocker(
-                cmd -> cmd.withCmd("sh", "-c", "ip route|awk '/default/ { print $3 }'"),
-                (client, id) -> {
-                    try {
-                        return client.logContainerCmd(id)
-                                .withStdOut(true)
-                                .exec(new LogToStringContainerCallback())
-                                .toString();
-                    } catch (Exception e) {
-                        return null;
-                    }
-                }
-        ))
-                .map(StringUtils::trimToEmpty)
-                .filter(StringUtils::isNotBlank)
-                .orElse(null);
+    @AfterAll
+    public static void tearDown() throws Exception {
+        driver.quit();
     }
 
 }
