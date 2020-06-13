@@ -27,7 +27,7 @@ public class PDF_Extractor {
 		System.out.println("PDF Extractor object was created successfully.");
 		System.out.println("++++++++++++++++++++++++++++++\n");
 	}
-
+	
 	public void populateFilesList() {
 		System.out.println("++++++++++++++++++++++++++++++");
 		System.out.println("Populating PDF file list...");
@@ -118,6 +118,10 @@ public class PDF_Extractor {
 			System.out.println(ele.getChild("front").getChild("journal-meta").getChild("journal-title-group")
 					.getChildText("journal-title"));
 		}
+	}
+	
+	public ArrayList<File> getPdfFileList() {
+		return pdfFileList;
 	}
 
 }
