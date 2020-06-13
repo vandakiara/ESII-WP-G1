@@ -1,16 +1,17 @@
+import com.mailslurp.client.ApiClient;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.testcontainers.junit.jupiter.Testcontainers;
+
+import static com.mailslurp.client.Configuration.getDefaultApiClient;
 
 /**
  * The setup for selenium and the chrome webdriver.
  *
  * @author Vanda Barata (vsfba1@iscte-iul.pt)
  */
-@Testcontainers
 public class WebDriverSetup {
 
     /**
@@ -22,6 +23,11 @@ public class WebDriverSetup {
      * URL to be used for tests - the localhost and the port for the wordpress container.
      */
     public static final String baseUrl = "http://" + TestProperties.HOSTNAME + ":" + TestProperties.WP_PORT;
+
+    /**
+     * The mailslurp client which will allow testing registrations and whatever else requires the use of emails.
+     */
+    public static ApiClient mailslurpClient;
 
     /**
      * Method to do the needed setup for selenium and the webdriver, with the needed options.
@@ -45,6 +51,11 @@ public class WebDriverSetup {
         options.addArguments("--disable-gpu"); //https://stackoverflow.com/questions/51959986/how-to-solve-selenium-chromedriver-timed-out-receiving-message-from-renderer-exc
 
         driver = new ChromeDriver(options);
+
+        // setup mailslurp
+        mailslurpClient = getDefaultApiClient();
+        mailslurpClient.setApiKey("a5466caef6f3662c8165393d27392bf36c9b07c86d7f4c2918309a5e0bed8f89");
+        mailslurpClient.setConnectTimeout(10000);
     }
 
     /**
