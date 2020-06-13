@@ -571,16 +571,24 @@ jQuery(function($) {
 		 * @return {boolean} True if the places autocomplete is available
 		 */
 		isGoogleAutocompleteSupported: function() {
-			return 
-				typeof google === 'object' && 
-				typeof google.maps === 'object' && 
-				typeof google.maps.places === 'object' && 
-				typeof google.maps.places.Autocomplete === 'function' &&
-				!(
-					WPGMZA.CloudAPI
-					&&
-					WPGMZA.CloudAPI.isBeingUsed
-				);
+			
+			if(!window.google)
+				return false;
+			
+			if(!google.maps)
+				return false;
+			
+			if(!google.maps.places)
+				return false;
+			
+			if(!google.maps.places.Autocomplete)
+				return false;
+			
+			if(WPGMZA.CloudAPI && WPGMZA.CloudAPI.isBeingUsed)
+				return false;
+			
+			return true;
+			
 		},
 		
 		/**

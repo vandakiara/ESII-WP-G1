@@ -29,7 +29,7 @@ jQuery(function($) {
 			element.googleAutoComplete = new google.maps.places.Autocomplete(element, options);
 			
 			if(options.country)
-				element.googleAutoComplete.setComponentRestriction({country: options.country});
+				element.googleAutoComplete.setComponentRestrictions({country: options.country});
 		}
 		else if(WPGMZA.CloudAPI && WPGMZA.CloudAPI.isBeingUsed)
 			element.cloudAutoComplete = new WPGMZA.CloudAutocomplete(element, options);
