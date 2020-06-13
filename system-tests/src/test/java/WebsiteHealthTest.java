@@ -25,7 +25,7 @@ public class WebsiteHealthTest extends WebDriverSetup {
      */
     @Test
     public void covidEvolutionReturnsOK() {
-        goToPageAndCheckTitle("menu-item-56", "Covid Evolution");
+        goToMenuPageAndCheckTitle("menu-item-56", "Covid Evolution");
     }
 
     /**
@@ -33,7 +33,7 @@ public class WebsiteHealthTest extends WebDriverSetup {
      */
     @Test
     public void covidSpreadReturnsOK() {
-        goToPageAndCheckTitle("menu-item-57", "Covid Spread");
+        goToMenuPageAndCheckTitle("menu-item-57", "Covid Spread");
     }
 
     /**
@@ -41,7 +41,7 @@ public class WebsiteHealthTest extends WebDriverSetup {
      */
     @Test
     public void covidQueriesReturnsOK() {
-        goToPageAndCheckTitle("menu-item-55", "Covid Queries");
+        goToMenuPageAndCheckTitle("menu-item-55", "Covid Queries");
     }
 
     /**
@@ -49,7 +49,7 @@ public class WebsiteHealthTest extends WebDriverSetup {
      */
     @Test
     public void covidWikiReturnsOK() {
-        goToPageAndCheckTitle("menu-item-203", "Covid-19");
+        goToMenuPageAndCheckTitle("menu-item-203", "Covid-19");
     }
 
     /**
@@ -57,7 +57,39 @@ public class WebsiteHealthTest extends WebDriverSetup {
      */
     @Test
     public void covidScientificReturnsOK() {
-        goToPageAndCheckTitle("menu-item-58", "Covid Scientific Discoveries");
+        goToMenuPageAndCheckTitle("menu-item-58", "Covid Scientific Discoveries");
+    }
+
+    /**
+     * Confirms the About Us page is being loaded by checking its title.
+     */
+    @Test
+    public void aboutUsReturnsOK() {
+        goToFooterPageAndCheckTitle("#footer-col3 > aside > ul > li.page_item.page-item-39 > a", "About Us");
+    }
+
+    /**
+     * Confirms the Contact Us page is being loaded by checking its title.
+     */
+    @Test
+    public void contactUsReturnsOK() {
+        goToFooterPageAndCheckTitle("#footer-col3 > aside > ul > li.page_item.page-item-35 > a", "Contact Us");
+    }
+
+    /**
+     * Confirms the Covid FAQ page is being loaded by checking its title.
+     */
+    @Test
+    public void covidFAQReturnsOK() {
+        goToFooterPageAndCheckTitle("#footer-col3 > aside > ul > li.page_item.page-item-32 > a", "Covid FAQ");
+    }
+
+    /**
+     * Confirms the Privacy Policy page is being loaded by checking its title.
+     */
+    @Test
+    public void privacyPolicyReturnsOK() {
+        goToFooterPageAndCheckTitle("#footer-col3 > aside > ul > li.page_item.page-item-239 > a", "Privacy Policy");
     }
 
     /**
@@ -67,10 +99,28 @@ public class WebsiteHealthTest extends WebDriverSetup {
      * @param menuId        the id that identifies the menu item.
      * @param titleCheck    the title we want to compare against to validate the test.
      */
-    private void goToPageAndCheckTitle(String menuId, String titleCheck) {
+    private void goToMenuPageAndCheckTitle(String menuId, String titleCheck) {
         driver.get(baseUrl);
 
         driver.findElement(By.id(menuId)).findElement(By.tagName("a")).click();
+
+        WebElement covidPageTitle = new WebDriverWait(driver, 10)
+                .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#intro-core > h1 > span")));
+
+        assert(covidPageTitle.getAttribute("innerHTML").contains(titleCheck));
+    }
+
+    /**
+     * Method that validates if a page is loading by selecting it from the main page,
+     * and then verifying if it's loaded by checking its title.
+     *
+     * @param cssSelect     the css selector that identifies the item.
+     * @param titleCheck    the title we want to compare against to validate the test.
+     */
+    private void goToFooterPageAndCheckTitle(String cssSelect, String titleCheck) {
+        driver.get(baseUrl);
+
+        driver.findElement(By.cssSelector(cssSelect)).click();
 
         WebElement covidPageTitle = new WebDriverWait(driver, 10)
                 .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#intro-core > h1 > span")));
