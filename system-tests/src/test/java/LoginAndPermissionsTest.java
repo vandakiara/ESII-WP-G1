@@ -72,18 +72,63 @@ public class LoginAndPermissionsTest extends WebDriverSetup {
     }
 
     /**
-     * Registers user and confirms its email to then check for
+     * Confirms is user is able to register and get a confirmation email.
+     */
+    @Test
+    public void userIsAbleToRegisterTest() {
+        final String email = inbox.getEmailAddress();
+
+        register(email);
+
+        // receive a verification email from wordpress using mailslurp
+        WaitForControllerApi waitForControllerApi = new WaitForControllerApi(mailslurpClient);
+
+        try {
+            // wait for latest unread email in the inbox
+            Email mail = waitForControllerApi.waitForLatestEmail(inbox.getId(), 10000L, true);
+
+            // confirm the user received the registration email
+            assertTrue(Objects.requireNonNull(mail.getSubject()).contains("Please confirm your registration on ESII-WP-G1"));
+
+            // create a regex for matching the code we expect in the email body
+            Pattern p = Pattern.compile("http\\S*?\\?\\S*");
+            Matcher matcher = p.matcher(Objects.requireNonNull(mail.getBody()));
+
+            assertTrue(matcher.find());
+
+            String confirmationLink = matcher.group(0).toString();
+
+            assert(confirmationLink.contains("ur_token"));
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Logs in with a "Member" user and then checks for
      * the presence of the menu item for the website Analytics.
      */
     @Test
-    public void memberHasAccessToAnalytics() {
-        final String email = inbox.getEmailAddress();
-
-        register(email, "pass");
-        login(email, "pass");
+    public void memberHasAccessToAnalyticsTest() {
+        login("member", "Member");
 
         new WebDriverWait(driver, 10)
                 .until(ExpectedConditions.presenceOfElementLocated(By.id("menu-item-222")));
+    }
+
+    /**
+     * Logs in with an "Administrator" user and then checks for
+     * the presence of the menu item for the Covid Scientific Discoveries Repository.
+     */
+    @Test
+    public void adminHasAccessToCovidRepoTest() {
+        login("admin", "admin");
+
+        driver.get(baseUrl);
+
+        new WebDriverWait(driver, 10)
+                .until(ExpectedConditions.presenceOfElementLocated(By.id("menu-item-234")));
+
     }
 
     /**
@@ -112,10 +157,9 @@ public class LoginAndPermissionsTest extends WebDriverSetup {
     /**
      * Performs a registration with given email and password.
      *
-     * @param email     email to be used for registration.
-     * @param password  password to be used for registration.
+     *  @param email     email to be used for registration.
      */
-    private void register(String email, String password) {
+    private void register(String email) {
         driver.get(baseUrl);
 
         driver.findElement(By.cssSelector("#footer-col1 > aside > ul > li.page_item.page-item-37 > a")).click();
@@ -147,43 +191,16 @@ public class LoginAndPermissionsTest extends WebDriverSetup {
 
         emailField.sendKeys(email);
 
-        passwordField.sendKeys(password);
+        passwordField.sendKeys("pass");
 
-        confirmationPassowrdField.sendKeys(password);
+        confirmationPassowrdField.sendKeys("pass");
 
         privacyCheckButton.click();
 
         submitButton.click();
 
         new WebDriverWait(driver, 10)
-                .until(ExpectedConditions.presenceOfElementLocated(By.))
-
-        // receive a verification email from wordpress using mailslurp
-        WaitForControllerApi waitForControllerApi = new WaitForControllerApi(mailslurpClient);
-
-        try {
-            // wait for latest unread email in the inbox
-            Email mail = waitForControllerApi.waitForLatestEmail(inbox.getId(), 10000L, true);
-
-            // confirm the user received the registration email
-            assertTrue(Objects.requireNonNull(mail.getSubject()).contains("Please confirm your registration on ESII-WP-G1"));
-
-            // create a regex for matching the code we expect in the email body
-            Pattern p = Pattern.compile("http\\S*?\\?\\S*");
-            Matcher matcher = p.matcher(Objects.requireNonNull(mail.getBody()));
-
-            assertTrue(matcher.find());
-
-            String confirmationLink = matcher.group(0);
-
-            driver.get(confirmationLink);
-
-            WebElement registrationConfirmation = new WebDriverWait(driver, 10)
-                    .until(ExpectedConditions.presenceOfElementLocated(By.id("user-registration")));
-
-        } catch (ApiException e) {
-            e.printStackTrace();
-        }
+                .until(ExpectedConditions.presenceOfElementLocated(By.id("ur-submit-message-node")));
 
     }
 }
