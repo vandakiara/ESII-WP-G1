@@ -12,7 +12,7 @@ public class CovidEvolutionDiffMain {
 
 	public static void main(String[] args) {
 		Vertx.vertx().createHttpServer().requestHandler(request -> {
-
+			
 			/**
 			 * Check if there is a new Tag available. If not, get the stored version of the
 			 * Diff Page. Else, builds the new Diff Page.

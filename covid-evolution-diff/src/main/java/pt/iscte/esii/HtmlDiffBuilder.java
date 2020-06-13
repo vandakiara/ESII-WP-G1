@@ -16,6 +16,12 @@ public class HtmlDiffBuilder {
 		htmlPage = htmlPage.replace("$tagBase", diff.tagBase);
 		htmlPage = htmlPage.replace("$tagCompare", diff.tagCompare);
 
+		String diffTableRows = getDiffTableRows(diff);
+		htmlPage = htmlPage.replace("$diffRows", diffTableRows);
+		return htmlPage;
+	}
+
+	private String getDiffTableRows(GitDiff diff) {
 		List<GitDiffChunk> diffChunks = diff.chunks;
 		String diffTableRows = "";
 		for (GitDiffChunk chunk : diffChunks) {
@@ -27,14 +33,13 @@ public class HtmlDiffBuilder {
 					: "";
 			String type = chunk.type.getStr();
 			String line = chunk.line.replaceAll("\\s", "&nbsp;").replace("<", "&lt;").replace(">", "&gt;");
-			diffTableRows += "<tr class=\"diff-" + type + "-row\">\n" +
-					"        <td class=\"diff-" + type + "-number\">" + deletionNumber + "</td>\n" +
-					"        <td class=\"diff-" + type + "-number\">" + additionNumber + "</td>\n" +
-					"        <td>" + line + "</td>\n" + "      </tr>\n";
+			diffTableRows += "<tr class=\"diff-" + type + "-row\">\n"
+					+ "        <td class=\"diff-" + type + "-number\">" + deletionNumber + "</td>\n"
+					+ "        <td class=\"diff-" + type + "-number\">" + additionNumber + "</td>\n"
+					+ "        <td>" + line + "</td>\n"
+					+ "      </tr>\n";
 		}
-
-		htmlPage = htmlPage.replace("$diffRows", diffTableRows);
-		return htmlPage;
+		return diffTableRows;
 	}
 
 	public String getHtmlPage() {
