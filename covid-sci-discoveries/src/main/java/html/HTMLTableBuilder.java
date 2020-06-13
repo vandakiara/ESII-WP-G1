@@ -1,10 +1,25 @@
 package html;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
+
+import pdf.extractor.PDF_Extractor;
 
 public class HTMLTableBuilder {
+	private int columns;
+	public static final String PATH = "D:\\University\\ES II\\PDFs";
 	private final StringBuilder table = new StringBuilder();
+	public ArrayList<File> filePaths;
+	public ArrayList<File> previousPDFs;
+	public ArrayList<File> currentPDFs;
+
 	public static String HTML_START = "<html>";
 	public static String HTML_END = "</html>";
 	public static String TABLE_START_BORDER = "<table border=\"1\">";
@@ -16,18 +31,12 @@ public class HTMLTableBuilder {
 	public static String ROW_END = "</tr>";
 	public static String COLUMN_START = "<td>";
 	public static String COLUMN_END = "</td>";
-	private int columns;
-	public ArrayList<File> filePaths;
 
-	/**
-	 * @param header
-	 * @param border
-	 * @param rows
-	 * @param columns
-	 */
 	public HTMLTableBuilder(String header, boolean border, int rows, int columns, ArrayList<File> filePaths) {
 		this.columns = columns;
 		this.filePaths = filePaths;
+		previousPDFs = new ArrayList<File>();
+		currentPDFs = new ArrayList<File>();
 		if (header != null) {
 			table.append("<b>");
 			table.append(header);
@@ -43,16 +52,16 @@ public class HTMLTableBuilder {
 		int counter = 0;
 		int numberOfColumns = table.length;
 		String[] headers = new String[numberOfColumns];
+		int columnCounter = 0;
+		int rowCounter = 1;
+		String[] data = new String[numberOfColumns];
 
 		while (counter < numberOfColumns) {
 			headers[counter] = table[counter][0];
 			counter++;
 		}
-		addTableHeader(headers);
 
-		int columnCounter = 0;
-		int rowCounter = 1;
-		String[] data = new String[numberOfColumns];
+		addTableHeader(headers);
 
 		while (rowCounter < table[0].length) {
 			while (columnCounter < numberOfColumns) {
@@ -68,9 +77,6 @@ public class HTMLTableBuilder {
 		return this.build();
 	}
 
-	/**
-	 * @param values
-	 */
 	public void addTableHeader(String... values) {
 		if (values.length != columns) {
 			System.out.println("Error column lenth");
@@ -90,9 +96,6 @@ public class HTMLTableBuilder {
 		}
 	}
 
-	/**
-	 * @param values
-	 */
 	public void addRowValues(String... values) {
 		if (values.length != columns) {
 			System.out.println("Error column lenth");
@@ -112,13 +115,13 @@ public class HTMLTableBuilder {
 						sb.append(COLUMN_END);
 						filePaths.remove(0);
 						counter++;
-					}else {
+					} else {
 						sb.append(COLUMN_START);
 						sb.append(value);
 						sb.append(COLUMN_END);
 						counter++;
 					}
-						
+
 				}
 				sb.append(ROW_END);
 				table.insert(index, sb.toString());
@@ -126,9 +129,18 @@ public class HTMLTableBuilder {
 		}
 	}
 
-	/**
-	 * @return
-	 */
+	public static String getHTML() {
+		PDF_Extractor extractor = new PDF_Extractor(PATH);
+		String[][] table = extractor.getTable();
+		if (table == null) {
+			System.out.println("No PDF files to extract!");
+			return null;
+		} else {
+			HTMLTableBuilder HTMLTable = new HTMLTableBuilder(null, false, 4, 4, extractor.getPdfFileList());
+			return HTMLTable.buildTable(table);
+		}
+	}
+
 	public String build() {
 		return table.toString();
 	}
