@@ -155,6 +155,9 @@ public class LoginAndPermissionsTest extends WebDriverSetup {
 
         submitButton.click();
 
+        new WebDriverWait(driver, 10)
+                .until(ExpectedConditions.presenceOfElementLocated(By.))
+
         // receive a verification email from wordpress using mailslurp
         WaitForControllerApi waitForControllerApi = new WaitForControllerApi(mailslurpClient);
 
