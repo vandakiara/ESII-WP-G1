@@ -1,12 +1,9 @@
-import java.util.ArrayList;
-import java.util.List;
-
+package pt.iscte.esii;
 public class GitDiffChunk {
 	int lineAddition;
 	int lineDeletion;
 	DiffType type;
 	String line;
-//	List<GitDiffLineContent> line = new ArrayList<GitDiffLineContent>();
 
 	public GitDiffChunk(int lineAddition, int lineDeletion, DiffType type, String line) {
 		super();
@@ -23,18 +20,4 @@ public class GitDiffChunk {
 				+ line;
 	}
 
-//	public void addContent(boolean isDiff, String content) {
-//		line.add(new GitDiffLineContent(isDiff, content));
-//	}
 }
-
-//class GitDiffLineContent {
-//	boolean isDiff;
-//	String content;
-//
-//	public GitDiffLineContent(boolean isDiff, String content) {
-//		super();
-//		this.isDiff = isDiff;
-//		this.content = content;
-//	}
-//}

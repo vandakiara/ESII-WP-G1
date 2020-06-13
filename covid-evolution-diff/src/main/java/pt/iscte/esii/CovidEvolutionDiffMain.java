@@ -1,3 +1,4 @@
+package pt.iscte.esii;
 import java.io.IOException;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import io.vertx.core.Vertx;
@@ -5,16 +6,16 @@ import io.vertx.core.Vertx;
 public class CovidEvolutionDiffMain {
 
 	private static String htmlFailedPage = "Failed to load Covid Evolution";
+	static ConnGit git = new ConnGit();
+	static HtmlDiffBuilder diffHtmlBuilder = new HtmlDiffBuilder();
+	static String diffHtml = null;
 
 	public static void main(String[] args) {
 		Vertx.vertx().createHttpServer().requestHandler(request -> {
-			ConnGit git = new ConnGit();
-			HtmlDiffBuilder diffHtmlBuilder = new HtmlDiffBuilder();
-			String diffHtml = null;
 
 			/**
-			 * Check if there is a new Tag available. If not, get the stored version
-			 * of the Diff Page. Else, builds the new Diff Page.
+			 * Check if there is a new Tag available. If not, get the stored version of the
+			 * Diff Page. Else, builds the new Diff Page.
 			 */
 			if (!git.hasNewTag()) {
 				diffHtml = diffHtmlBuilder.getHtmlPage();
@@ -28,7 +29,7 @@ public class CovidEvolutionDiffMain {
 			}
 
 			/**
-			 * If failed to build Diff Page, send error message 
+			 * If failed to build Diff Page, send error message
 			 */
 			if (diffHtml == null) {
 				diffHtml = htmlFailedPage;

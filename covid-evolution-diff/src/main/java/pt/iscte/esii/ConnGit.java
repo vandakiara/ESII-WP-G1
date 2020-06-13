@@ -1,3 +1,4 @@
+package pt.iscte.esii;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -49,6 +50,9 @@ public class ConnGit {
 	};
 
 	public boolean hasNewTag() {
+		if (tagLatest == null) {
+			return true;
+		}
 		Collection<Ref> refs;
 		try {
 			/**
@@ -56,7 +60,7 @@ public class ConnGit {
 			 * repository
 			 */
 			refs = Git.lsRemoteRepository().setHeads(true).setTags(true).setRemote(REMOTE_URL).call();
-			return !refs.iterator().next().equals(tagLatest);
+			return !refs.iterator().next().getObjectId().equals(tagLatest.getObjectId());
 		} catch (GitAPIException e) {
 			System.out.println("Failed to check for new tags in " + REMOTE_URL + ": " + e);
 		}
@@ -82,8 +86,8 @@ public class ConnGit {
 		 */
 		Object[] tagArray = git.tagList().call().toArray();
 		int size = tagArray.length;
-		Ref tagLatest = size > 0 ? (Ref) tagArray[size - 1] : null;
-		Ref tagPrevious = size > 1 ? (Ref) tagArray[size - 2] : null;
+		tagLatest = size > 0 ? (Ref) tagArray[size - 1] : null;
+		tagPrevious = size > 1 ? (Ref) tagArray[size - 2] : null;
 
 		/**
 		 * Prepare Tree Iterators to compare version from both tags
@@ -170,7 +174,7 @@ public class ConnGit {
 		}
 	}
 
-	public List<GitDiffChunk> getDiffChunks(String fullFile, String diff) {
+	private List<GitDiffChunk> getDiffChunks(String fullFile, String diff) {
 		List<GitDiffChunk> chunk = new ArrayList<GitDiffChunk>();
 		String[] diffStrs = diff.split("\n@@");
 		String[] fullFileStrs = fullFile.split("\n");
@@ -180,7 +184,7 @@ public class ConnGit {
 
 		int lineNumDeleted = 1;
 		int lineNumAddition = 1;
-		
+
 		/**
 		 * Build list of chunk objects, containing the Diff information
 		 */
@@ -190,21 +194,21 @@ public class ConnGit {
 			if (lines.length < 2) {
 				continue;
 			}
-			int diffStartDeleted = Integer.parseInt(lines[0].substring(lines[0].indexOf('-') + 1, lines[0].indexOf(',')));
+			int diffStartDeleted = Integer
+					.parseInt(lines[0].substring(lines[0].indexOf('-') + 1, lines[0].indexOf(',')));
 			int diffStartAddition = Integer.parseInt(
 					lines[0].substring(lines[0].indexOf('+') + 1, lines[0].indexOf(',', lines[0].indexOf(',') + 1)));
-			
-			while (lineNumAddition != diffStartAddition && lineNumDeleted != diffStartDeleted && lineNumDeleted < fullFileStrs.length) {
-				chunk.add(new GitDiffChunk(lineNumAddition++, lineNumDeleted++, DiffType.NEUTRAL, fullFileStrs[lineNumDeleted - 1]));
+
+			while (lineNumAddition != diffStartAddition && lineNumDeleted != diffStartDeleted
+					&& lineNumDeleted < fullFileStrs.length) {
+				chunk.add(new GitDiffChunk(lineNumAddition++, lineNumDeleted++, DiffType.NEUTRAL,
+						fullFileStrs[lineNumDeleted - 1]));
 			}
-			
+
 			for (int j = 1; j < lines.length; j++) {
 				String d = lines[j];
-				DiffType type = d.indexOf('-') == 0
-						? DiffType.DELETION
-						: d.indexOf('+') == 0 
-							? DiffType.ADDITION
-							: DiffType.NEUTRAL;
+				DiffType type = d.indexOf('-') == 0 ? DiffType.DELETION
+						: d.indexOf('+') == 0 ? DiffType.ADDITION : DiffType.NEUTRAL;
 				chunk.add(new GitDiffChunk(lineNumAddition, lineNumDeleted, type, d));
 
 				switch (type) {
@@ -223,7 +227,8 @@ public class ConnGit {
 		}
 
 		while (lineNumDeleted < fullFileStrs.length) {
-			chunk.add(new GitDiffChunk(lineNumAddition++, lineNumDeleted++, DiffType.NEUTRAL, fullFileStrs[lineNumDeleted - 1]));
+			chunk.add(new GitDiffChunk(lineNumAddition++, lineNumDeleted++, DiffType.NEUTRAL,
+					fullFileStrs[lineNumDeleted - 1]));
 		}
 
 		return chunk;

@@ -1,8 +1,7 @@
+package pt.iscte.esii;
 
 public enum DiffType {
-	ADDITION("addition"),
-	DELETION("deletion"),
-	NEUTRAL("neutral");
+	ADDITION("addition"), DELETION("deletion"), NEUTRAL("neutral");
 
 	private String str;
 
