@@ -7,6 +7,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 /**
  * The setup for selenium and the chrome webdriver.
+ *
  * @author Vanda Barata (vsfba1@iscte-iul.pt)
  */
 @Testcontainers
@@ -18,16 +19,25 @@ public class WebDriverSetup {
     public static WebDriver driver;
 
     /**
-     * URL to be used for tests - the localhost (equivalent to the host's IP) and the port for the wordpress container.
+     * URL to be used for tests - the localhost and the port for the wordpress container.
      */
     public static final String baseUrl = "http://" + TestProperties.HOSTNAME + ":" + TestProperties.WP_PORT;
 
+    /**
+     * Method to do the needed setup for selenium and the webdriver, with the needed options.
+     *
+     * @throws Exception
+     */
     @BeforeAll
     public static void setUp() throws Exception {
+        // Chromedriver version 81 - only compatible with linux and chrome version 81.
         System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver");
 
         ChromeOptions options = new ChromeOptions();
         // options.addArguments("--headless"); // to run without graphical mode
+
+        // solution to avoid tests failing due to problems with the chromedriver
+        // taken from https://stackoverflow.com/a/52340526
         options.addArguments("start-maximized"); // https://stackoverflow.com/a/26283818/1689770
         options.addArguments("enable-automation"); // https://stackoverflow.com/a/43840128/1689770
         options.addArguments("--no-sandbox"); //https://stackoverflow.com/a/50725918/1689770
@@ -39,6 +49,11 @@ public class WebDriverSetup {
         driver = new ChromeDriver(options);
     }
 
+    /**
+     * Method to ensure the browser is closed at the end of the tests.
+     *
+     * @throws Exception
+     */
     @AfterAll
     public static void tearDown() throws Exception {
         driver.quit();
