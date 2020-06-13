@@ -1,7 +1,9 @@
 package html;
-public class HTMLTableBuilder {
 
-	private int columns;
+import java.io.File;
+import java.util.ArrayList;
+
+public class HTMLTableBuilder {
 	private final StringBuilder table = new StringBuilder();
 	public static String HTML_START = "<html>";
 	public static String HTML_END = "</html>";
@@ -14,6 +16,8 @@ public class HTMLTableBuilder {
 	public static String ROW_END = "</tr>";
 	public static String COLUMN_START = "<td>";
 	public static String COLUMN_END = "</td>";
+	private int columns;
+	public ArrayList<File> filePaths;
 
 	/**
 	 * @param header
@@ -21,8 +25,9 @@ public class HTMLTableBuilder {
 	 * @param rows
 	 * @param columns
 	 */
-	public HTMLTableBuilder(String header, boolean border, int rows, int columns) {
+	public HTMLTableBuilder(String header, boolean border, int rows, int columns, ArrayList<File> filePaths) {
 		this.columns = columns;
+		this.filePaths = filePaths;
 		if (header != null) {
 			table.append("<b>");
 			table.append(header);
@@ -38,22 +43,21 @@ public class HTMLTableBuilder {
 		int counter = 0;
 		int numberOfColumns = table.length;
 		String[] headers = new String[numberOfColumns];
-		
-		while(counter < numberOfColumns) {
+
+		while (counter < numberOfColumns) {
 			headers[counter] = table[counter][0];
 			counter++;
 		}
 		addTableHeader(headers);
-		
-		
+
 		int columnCounter = 0;
 		int rowCounter = 1;
 		String[] data = new String[numberOfColumns];
-		
-		while(rowCounter < table[0].length) {
-			while(columnCounter < numberOfColumns) {
-				 data[columnCounter] = table[columnCounter][rowCounter];
-				 columnCounter++;
+
+		while (rowCounter < table[0].length) {
+			while (columnCounter < numberOfColumns) {
+				data[columnCounter] = table[columnCounter][rowCounter];
+				columnCounter++;
 			}
 			columnCounter = 0;
 			this.addRowValues(data);
@@ -61,10 +65,9 @@ public class HTMLTableBuilder {
 			rowCounter++;
 		}
 
-		
 		return this.build();
 	}
-	
+
 	/**
 	 * @param values
 	 */
@@ -99,10 +102,23 @@ public class HTMLTableBuilder {
 				int index = lastIndex + ROW_END.length();
 				StringBuilder sb = new StringBuilder();
 				sb.append(ROW_START);
+				int counter = 0;
 				for (String value : values) {
-					sb.append(COLUMN_START);
-					sb.append(value);
-					sb.append(COLUMN_END);
+					if (counter == 0) {
+						sb.append(COLUMN_START);
+						sb.append("<a href=\"" + filePaths.get(0).getAbsolutePath() + "`\">");
+						sb.append(value);
+						sb.append("</a>");
+						sb.append(COLUMN_END);
+						filePaths.remove(0);
+						counter++;
+					}else {
+						sb.append(COLUMN_START);
+						sb.append(value);
+						sb.append(COLUMN_END);
+						counter++;
+					}
+						
 				}
 				sb.append(ROW_END);
 				table.insert(index, sb.toString());
@@ -117,17 +133,8 @@ public class HTMLTableBuilder {
 		return table.toString();
 	}
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		HTMLTableBuilder htmlBuilder = new HTMLTableBuilder(null, true, 2, 3);
-		htmlBuilder.addTableHeader("1H", "2H", "3H");
-		htmlBuilder.addRowValues("1", "2", "3");
-		htmlBuilder.addRowValues("4", "5", "6");
-		htmlBuilder.addRowValues("9", "8", "7");
-		String table = htmlBuilder.build();
-		System.out.println(table.toString());
+	public void setFilePaths(ArrayList<File> filePaths) {
+		this.filePaths = filePaths;
 	}
 
 }
