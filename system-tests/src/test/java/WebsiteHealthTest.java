@@ -60,6 +60,13 @@ public class WebsiteHealthTest extends WebDriverSetup {
         goToPageAndCheckTitle("menu-item-58", "Covid Scientific Discoveries");
     }
 
+    /**
+     * Method that validates if a page is loading by selecting it from the main page,
+     * and then verifying if it's loaded by checking its title.
+     *
+     * @param menuId        the id that identifies the menu item.
+     * @param titleCheck    the title we want to compare against to validate the test.
+     */
     private void goToPageAndCheckTitle(String menuId, String titleCheck) {
         driver.get(baseUrl);
 
