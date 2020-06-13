@@ -1,0 +1,88 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>covid-query</groupId>
+	<artifactId>covid-query</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Covid19</name>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<application.mainclass>CovidQueryMain</application.mainclass>
+		<application.dependencies>lib</application.dependencies>
+		<application.workdir>application</application.workdir>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-core</artifactId>
+			<version>3.4.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-web</artifactId>
+			<version>3.4.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jgit</groupId>
+			<artifactId>org.eclipse.jgit</artifactId>
+			<version>5.7.0.202003110725-r</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-jdk14</artifactId>
+			<version>1.7.25</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-lang3</artifactId>
+		    <version>3.8</version>
+		</dependency>
+		
+	</dependencies>
+
+	<build>
+		<plugins>
+		
+			<plugin>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.0.1</version>
+				<executions>
+					<execution>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<includeScope>runtime</includeScope>
+							<outputDirectory>${project.build.directory}/${application.dependencies}</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.0.2</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>${application.dependencies}</classpathPrefix>
+							<mainClass>${application.mainclass}</mainClass>
+							<!-- match with base version string naming of Maven Dependency Plugin -->
+							<useUniqueVersions>false</useUniqueVersions>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+
+	</build>
+
+
+</project>
