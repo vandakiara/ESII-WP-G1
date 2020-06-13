@@ -1,4 +1,5 @@
 package pt.iscte.esii;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -29,13 +30,37 @@ import org.eclipse.jgit.treewalk.filter.PathFilter;
 
 public class ConnGit {
 
+	/**
+	 * Git remote repository URL
+	 */
 	final String REMOTE_URL = "https://github.com/vbasto-iscte/ESII1920.git";
+	/**
+	 * Local path to clone repository
+	 */
 	final String LOCAL_PATH = "ESII1920";
+	/**
+	 * Path to file for checking diff
+	 */
 	final String FILE_PATH = "covid19spreading.rdf";
+	/**
+	 * The current Repository instance
+	 */
 	private Repository repository;
+	/**
+	 * The current git instance
+	 */
 	private Git git;
+	/**
+	 * Reference to latest tag available
+	 */
 	private Ref tagLatest = null;
+	/**
+	 * Reference to the tag previous to the latest one available
+	 */
 	private Ref tagPrevious = null;
+	/**
+	 * Custom OutputStream to be able to get the string value sent to the stream
+	 */
 	OutputStream output = new OutputStream() {
 		private StringBuilder string = new StringBuilder();
 
@@ -49,6 +74,12 @@ public class ConnGit {
 		}
 	};
 
+	/**
+	 * Verify if the remote repository has new tags, without cloning the remote
+	 * repository
+	 * 
+	 * @return If there is a new tag, compared with the tagLatest
+	 */
 	public boolean hasNewTag() {
 		if (tagLatest == null) {
 			return true;
@@ -67,6 +98,17 @@ public class ConnGit {
 		return false;
 	}
 
+	/**
+	 * Clones the remote repository localy, gets the latest tags, and perform a diff
+	 * operation between both tags to verify the differences between both tags for
+	 * the file
+	 * 
+	 * @return A GitDiff object containing the latest tags and the parsed diff
+	 * @throws IOException
+	 * @throws InvalidRemoteException
+	 * @throws TransportException
+	 * @throws GitAPIException
+	 */
 	public GitDiff getDiff() throws IOException, InvalidRemoteException, TransportException, GitAPIException {
 		/**
 		 * Clear to local directory to clone the remote project
@@ -123,6 +165,13 @@ public class ConnGit {
 		return new GitDiff(tagBase, tagCompare, parsedDiff);
 	}
 
+	/**
+	 * @param tag A tag reference
+	 * @return A String containing the content of the FILE_PATH file
+	 * @throws MissingObjectException
+	 * @throws IncorrectObjectTypeException
+	 * @throws IOException
+	 */
 	private String getFileFromTag(Ref tag) throws MissingObjectException, IncorrectObjectTypeException, IOException {
 		/**
 		 * Access file from the latest tag
@@ -154,6 +203,12 @@ public class ConnGit {
 
 	}
 
+	/**
+	 * @param repository A repository reference
+	 * @param objectId   A reference id for git. Can be a tag or a commit id.
+	 * @return
+	 * @throws IOException
+	 */
 	private AbstractTreeIterator prepareTreeParser(Repository repository, String objectId) throws IOException {
 		/**
 		 * From the tag we can, build the tree which allows to construct the TreeParser
@@ -174,6 +229,12 @@ public class ConnGit {
 		}
 	}
 
+	/**
+	 * @param fullFile The complete file content
+	 * @param diff     The Git Diff content
+	 * @return A List of GitDiffChunk, containing the complete file complemented
+	 *         with the diff data, containing the lines that were added or deleted
+	 */
 	private List<GitDiffChunk> getDiffChunks(String fullFile, String diff) {
 		List<GitDiffChunk> chunk = new ArrayList<GitDiffChunk>();
 		String[] diffStrs = diff.split("\n@@");
