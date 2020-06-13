@@ -1,3 +1,4 @@
+package pt.iscte.esii;
 import java.util.List;
 
 public class GitDiff {
