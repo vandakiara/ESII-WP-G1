@@ -5,11 +5,27 @@ import io.vertx.core.Vertx;
 
 public class CovidEvolutionDiffMain {
 
+	/**
+	 * Default message when failed to generate the page for the HTML diff
+	 */
 	private static String htmlFailedPage = "Failed to load Covid Evolution";
+	/**
+	 * Reference to Connection to Git
+	 */
 	static ConnGit git = new ConnGit();
+	/**
+	 * Reference to HTML Diff Builder
+	 */
 	static HtmlDiffBuilder diffHtmlBuilder = new HtmlDiffBuilder();
+	/**
+	 * Store the built HTML page
+	 */
 	static String diffHtml = null;
 
+	/**
+	 * Start application
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		Vertx.vertx().createHttpServer().requestHandler(request -> {
 			
