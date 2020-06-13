@@ -10,7 +10,7 @@ public class Main {
 		extractor.populateFilesList();
 		extractor.populateElementList();
 		String[][] table = extractor.getTable();
-		HTMLTableBuilder HTMLTable = new HTMLTableBuilder(null, false, 4, 4);
+		HTMLTableBuilder HTMLTable = new HTMLTableBuilder(null, false, 4, 4, extractor.getPdfFileList());
 		System.out.println(HTMLTable.buildTable(table));
 	}
 
