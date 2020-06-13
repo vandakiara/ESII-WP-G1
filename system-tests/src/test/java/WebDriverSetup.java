@@ -25,11 +25,9 @@ public class WebDriverSetup {
 
     /**
      * Method to do the needed setup for selenium and the webdriver, with the needed options.
-     *
-     * @throws Exception
      */
     @BeforeAll
-    public static void setUp() throws Exception {
+    public static void setUp() {
         // Chromedriver version 81 - only compatible with linux and chrome version 81.
         System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver");
 
@@ -51,11 +49,9 @@ public class WebDriverSetup {
 
     /**
      * Method to ensure the browser is closed at the end of the tests.
-     *
-     * @throws Exception
      */
     @AfterAll
-    public static void tearDown() throws Exception {
+    public static void tearDown() {
         driver.quit();
     }
 
