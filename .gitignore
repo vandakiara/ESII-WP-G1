@@ -6,4 +6,8 @@
 .idea/
 *.iml
 
+# Eclipse
+*/.classpath
+*/.project
+
 .DS_Store
