@@ -122,7 +122,7 @@ public class LoginPermissionsAndFormsTest extends WebDriverSetup {
         try {
             login("member", "Member");
             new WebDriverWait(driver, 10)
-                    .until(ExpectedConditions.presenceOfElementLocated(By.id("menu-item-222")));
+                    .until(ExpectedConditions.presenceOfElementLocated(By.id("menu-item-272")));
 
             driver.findElement(By.cssSelector("#footer-col1 > aside > ul > li > a")).click();
 
