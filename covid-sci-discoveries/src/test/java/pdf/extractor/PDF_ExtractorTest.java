@@ -2,7 +2,6 @@ package pdf.extractor;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
-import html.HTMLTableBuilder;
 
 import static org.junit.Assert.assertTrue;
 

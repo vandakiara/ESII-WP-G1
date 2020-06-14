@@ -11,8 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.ini4j.InvalidFileFormatException;
 import org.ini4j.Wini;
 import org.jdom.Element;
 import pl.edu.icm.cermine.ContentExtractor;
