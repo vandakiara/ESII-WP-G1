@@ -7,11 +7,11 @@ import java.io.IOException;
 
 public class HTMLTableBuilder {
 	/** Path to the CSV file where the metadata of the PDF files is stored. */
-	private final File csvPath = new File("D:\\University\\ES II\\PDFs\\metadata.csv");
+	private final File csvPath = new File("\\wordpress\\wp-content\\uploads\\simple-file-list\\metadata.csv");
 	/** Character or string to be used as a delimiter for the CSV file */
 	private final String DELIMITER = ";";
 	/** Path to the directory where the required PDF files are stored. */
-	private final File directoryPath = new File("D:\\University\\ES II\\PDFs");
+	private final File directoryPath = new File("\\wordpress\\wp-content\\uploads\\simple-file-list");
 	/** StrinBuilder that will hold the html code */
 	private final StringBuilder table = new StringBuilder();
 	/**

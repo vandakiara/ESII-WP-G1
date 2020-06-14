@@ -17,9 +17,9 @@ import pl.edu.icm.cermine.exception.AnalysisException;
 
 public class PDF_Extractor {
 	/** Path to the directory where the required PDF files are stored. */
-	private final File directoryPath = new File("D:\\University\\ES II\\PDFs");
+	private final File directoryPath = new File("\\wordpress\\wp-content\\uploads\\simple-file-list");
 	/** Path to the CSV file where the metadata of the PDF files is stored. */
-	private final File csvPath = new File("D:\\University\\ES II\\PDFs\\metadata.csv");
+	private final File csvPath = new File("\\wordpress\\wp-content\\uploads\\simple-file-list\\metadata.csv");
 	/** List of PDF files currently in the directory. */
 	private ArrayList<File> pdfFileList;
 	/** List of PDF files that need to be extracted into the CSV file. */
