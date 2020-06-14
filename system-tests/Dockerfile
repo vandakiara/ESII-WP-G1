@@ -59,7 +59,7 @@ RUN wget --no-verbose -O /tmp/chromedriver.zip https://chromedriver.storage.goog
 
 COPY cron-monitoring /etc/cron.d/cron-monitoring
 
-# Give execution rights on the cron job
+# Give execution rights on the cron job to run the tests every 2 hours
 RUN chmod 644 /etc/cron.d/cron-monitoring
 
 # Apply cron job
