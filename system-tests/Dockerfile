@@ -2,6 +2,8 @@ FROM picoded/ubuntu-openjdk-8-jdk
 
 COPY src src
 
+COPY pom.xml /workspace/pom.xml
+
 RUN rm src/test/resources/chromedriver
 
 RUN apt-get update \
@@ -47,11 +49,10 @@ ARG CHROME_DRIVER_VERSION=83.0.4103.39
 
 # Downloading and installing Chromedriver
 RUN wget --no-verbose -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip \
-    && unzip /tmp/chromedriver.zip -d src/test/resources/chromedriver \
-    && chmod 755 src/test/resources/chromedriver \
-    && rm /tmp/chromedriver.zip \
-    && mkdir /data
+    && unzip /tmp/chromedriver.zip -d src/test/resources \
+    && chmod 755 src/test/resources \
+    && rm /tmp/chromedriver.zip
 
-WORKDIR /data
+WORKDIR /workspace
 
 CMD tail -f /dev/null
