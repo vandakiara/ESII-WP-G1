@@ -42,8 +42,8 @@ public class TestProperties {
     public static final int COVID_QUERY_PORT = 3003;
 
     /**
-     * Service name for the wordpress container.
+     * Email address of the WP-CMS administrator.
      */
-    public static final String WP_SERVICE_NAME = "wordpress";
+    public static final String WP_ADMIN_MAIL = "es2wpg1@gmail.com";
 
 }

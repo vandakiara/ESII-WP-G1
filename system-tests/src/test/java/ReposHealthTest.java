@@ -3,18 +3,17 @@ import io.qameta.allure.Step;
 import io.qameta.allure.Story;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests about the git repositories overall health.
  *
  * @author Vanda Barata (vsfba1@iscte-iul.pt)
  */
-public class ReposHealthTest {
+public class ReposHealthTest extends WebDriverSetup{
 
     /**
      * Git repository used by our group for the project.
@@ -33,7 +32,14 @@ public class ReposHealthTest {
     @Story("Group's base github repository is returning a 200 OK response")
     @Description("Group's base github repository returns a 200 OK response")
     public void testGroupRepoIsHealthy() {
-        checkRepoHealth(groupGitRepo);
+        try {
+            checkRepoHealth(groupGitRepo);
+        } catch (Exception e) {
+            sendNotificationEmailToWPAdmin(
+                    "WP-CMS: Test faillure for Group Git Repo Health",
+                    "The test checking the health for the group's github repository has failed. \n\n" + e);
+            fail(e);
+        }
     }
 
     /**
@@ -43,7 +49,14 @@ public class ReposHealthTest {
     @Story("Teacher's github respository is returning a 200 OK response")
     @Description("Teacher's github respository returns a 200 OK response")
     public void testTeachersRepoIsHealthy() {
-        checkRepoHealth(teachersESIIGitRepo);
+        try {
+            checkRepoHealth(teachersESIIGitRepo);
+        } catch (Exception e) {
+            sendNotificationEmailToWPAdmin(
+                    "WP-CMS: Test faillure for Teachers Git Repo Health",
+                    "The test checking the health for the teacher's github repository has failed. \n\n" + e);
+            fail(e);
+        }
     }
 
     /**
@@ -53,13 +66,16 @@ public class ReposHealthTest {
      * @param url   The url for the git repo being checked.
      */
     @Step("Check github repository {0} for a 200 OK response")
-    private void checkRepoHealth(String url) {
-        try {
-            HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
-            final int responseCode = con.getResponseCode();
-            assertEquals(200, responseCode);
-        } catch (IOException e) {
-            e.printStackTrace();
+    private void checkRepoHealth(String url) throws Exception{
+        // establish a http connection to the given url and extract the response code
+        HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
+        final int responseCode = con.getResponseCode();
+
+        if(responseCode == 200) {
+            assertTrue(true);
+        }
+        else {
+            throw new Exception("Response code wasn't the expected 200. It returned code " + responseCode + " instead");
         }
     }
 

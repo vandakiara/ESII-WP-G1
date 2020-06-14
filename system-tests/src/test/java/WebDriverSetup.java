@@ -1,11 +1,21 @@
+import com.mailslurp.api.api.InboxControllerApi;
+import com.mailslurp.api.api.WaitForControllerApi;
 import com.mailslurp.client.ApiClient;
+import com.mailslurp.client.ApiException;
+import com.mailslurp.models.Inbox;
+import com.mailslurp.models.SendEmailOptions;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import java.util.Collections;
+import java.util.Objects;
+
 import static com.mailslurp.client.Configuration.getDefaultApiClient;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * The setup for selenium and the chrome webdriver.
@@ -25,9 +35,25 @@ public class WebDriverSetup {
     public static final String baseUrl = "http://" + TestProperties.HOSTNAME + ":" + TestProperties.WP_PORT;
 
     /**
+     * The WP-CMS administrator's email address.
+     */
+    private static final String adminEmail = TestProperties.WP_ADMIN_MAIL;
+
+    /**
      * The mailslurp client which will allow testing registrations and whatever else requires the use of emails.
      */
     public static ApiClient mailslurpClient;
+
+    /**
+     * Inbox to be used with the random generated email.
+     */
+    public static Inbox inbox;
+
+    /**
+     * The mailslurp API controller.
+     */
+    public static InboxControllerApi inboxControllerApi;
+
 
     /**
      * Method to do the needed setup for selenium and the webdriver, with the needed options.
@@ -55,7 +81,21 @@ public class WebDriverSetup {
         // setup mailslurp
         mailslurpClient = getDefaultApiClient();
         mailslurpClient.setApiKey("a5466caef6f3662c8165393d27392bf36c9b07c86d7f4c2918309a5e0bed8f89");
-        mailslurpClient.setConnectTimeout(10000);
+        mailslurpClient.setConnectTimeout(100000);
+
+        // create a real, randomized email address with MailSlurp to represent a user
+        inboxControllerApi = new InboxControllerApi(mailslurpClient);
+
+        try {
+            // create random email with inbox
+            inbox = inboxControllerApi.createInbox("testInbox",null,null,null, "testInbox", null);
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+
+        // check if the inbox was created
+        assertNotNull(inbox.getId());
+        assertTrue(Objects.requireNonNull(inbox.getEmailAddress()).contains("@mailslurp.com"));
     }
 
     /**
@@ -64,6 +104,34 @@ public class WebDriverSetup {
     @AfterAll
     public static void tearDown() {
         driver.quit();
+    }
+
+    /**
+     * Sends a notification email to the WP admin.
+     *
+     * @param subject   the email subject to be sent.
+     * @param message   the mail body to be sent.
+     */
+    public static void sendNotificationEmailToWPAdmin(String subject, String message) {
+            SendEmailOptions emailOptions = new SendEmailOptions();
+
+        emailOptions.to(Collections.singletonList(adminEmail));
+        emailOptions.subject(subject);
+        emailOptions.body(message);
+
+        try {
+
+            System.out.println("Sending notification email...");
+            inboxControllerApi.sendEmail(inbox.getId(), emailOptions);
+
+        } catch (ApiException e) {
+            System.err.println("Exception when calling InboxControllerApi#sendEmail");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+
     }
 
 }

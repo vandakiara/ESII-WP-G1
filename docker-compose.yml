@@ -64,7 +64,7 @@ services:
     networks:
       - wp_network
 
-    # System-tests
+  # System-tests
   system-tests:
     container_name: system-tests
     image: vandabarataiscte/test-docker:1.0
