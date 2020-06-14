@@ -2,7 +2,6 @@ package pdf.extractor;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
-import html.HTMLTableBuilder;
 
 import static org.junit.Assert.assertTrue;
 
@@ -15,7 +14,7 @@ import java.io.File;
  */
 public class PDF_ExtractorTest {
 	/** Path to the CSV file where the metadata of the PDF files is stored. */
-	private final File csvPath = new File("\\wordpress\\wp-content\\uploads\\simple-file-list");
+	private final File csvPath = new File("..\\wordpress\\wp-content\\uploads\\simple-file-list");
 
 	/**
 	 * Tests if the constructor is returning anything.

@@ -11,27 +11,38 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import org.ini4j.Wini;
 import org.jdom.Element;
 import pl.edu.icm.cermine.ContentExtractor;
 import pl.edu.icm.cermine.exception.AnalysisException;
 
 public class PDF_Extractor {
 	/** Path to the directory where the required PDF files are stored. */
-	private final File directoryPath = new File("\\wordpress\\wp-content\\uploads\\simple-file-list");
+	private File directoryPath;
 	/** Path to the CSV file where the metadata of the PDF files is stored. */
-	private final File csvPath = new File("\\wordpress\\wp-content\\uploads\\simple-file-list\\metadata.csv");
+	private File csvPath;
 	/** List of PDF files currently in the directory. */
 	private ArrayList<File> pdfFileList;
 	/** List of PDF files that need to be extracted into the CSV file. */
 	private ArrayList<File> pdfFileToBeExtractedList;
 	/** Character or string to be used as a delimiter for the CSV file*/
 	private final String DELIMITER = ";";
+	/**Path to the INI configuration file.*/
+	private final String CONFIG = "config.ini";
 
 	/**
 	 * Creates a PDF_Extractor object, used to extract specific metadata from PDF
 	 * files.
 	 */
 	public PDF_Extractor() {
+		Wini ini;
+		try {
+			ini = new Wini(new File(CONFIG));
+			 directoryPath = new File(ini.get("Paths", "simpleFilesPath"));
+			 csvPath = new File(ini.get("Paths", "csvPath"));
+		} catch (Exception e) {
+			System.out.println("Error while trying to read ini file. Could not start the path variables.");
+		}		
 		pdfFileList = new ArrayList<File>();
 		pdfFileToBeExtractedList = new ArrayList<File>();
 	}
@@ -45,7 +56,6 @@ public class PDF_Extractor {
 				csvPath.createNewFile();
 			} catch (IOException e) {
 				System.out.println("Could not create CSV file, despite it not existing.");
-				e.printStackTrace();
 			}
 		}
 	}
@@ -67,12 +77,11 @@ public class PDF_Extractor {
 	 */
 	public void deleteUnexistentFilesFromCSV() {
 		String row;
+		File tempFile = new File(csvPath.getAbsolutePath().replaceAll(csvPath.getName(), "tempFile"));
 		try {
-			File tempFile = new File(csvPath.getAbsolutePath().replaceAll(csvPath.getName(), "tempFile"));
 			int count = 0;
 			BufferedReader csvReader = new BufferedReader(new FileReader(csvPath.getAbsolutePath()));
 			BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-
 			while ((row = csvReader.readLine()) != null) {
 				String[] csvLineData = row.split(DELIMITER);
 				boolean existsInDirectory = false;
@@ -92,11 +101,11 @@ public class PDF_Extractor {
 			}
 			writer.close();
 			csvReader.close();
-			csvPath.delete();
-			tempFile.renameTo(csvPath);
 		} catch (Exception e) {
 			System.out.println("An error occurred while trying to detected deleted files.");
-			e.printStackTrace();
+		}finally {
+			csvPath.delete();
+			tempFile.renameTo(csvPath);
 		}
 	}
 
@@ -129,7 +138,6 @@ public class PDF_Extractor {
 
 		} catch (Exception e) {
 			System.out.println("Could not find the CSV file, or could not read from said file.");
-			e.printStackTrace();
 		}
 	}
 
@@ -177,7 +185,6 @@ public class PDF_Extractor {
 			csvWriter.close();
 		} catch (Exception e) {
 			System.out.println("Error while trying to extract PDF metadata.");
-			e.printStackTrace();
 		}
 	}
 
@@ -199,13 +206,10 @@ public class PDF_Extractor {
 			result = extractor.getContentAsNLM();
 			System.out.println("DONE.");
 		} catch (AnalysisException e) {
-			e.printStackTrace();
 			System.out.println("Something went wrong with the analysis of the PDF file.");
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 			System.out.println("File was not found.");
 		} catch (IOException e) {
-			e.printStackTrace();
 			System.out.println("Something went wrong while trying to open the PDF file.");
 		}
 		return result;

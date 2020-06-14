@@ -9,7 +9,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		VertxOptions options = new VertxOptions();
-		options.setBlockedThreadCheckInterval(2000000);
+		options.setBlockedThreadCheckInterval(1000000);
 		Vertx.vertx(options).createHttpServer().requestHandler(request -> {
 			request.response().putHeader("content-type", "text/html").end(auxMain());
 		}).listen(3002);

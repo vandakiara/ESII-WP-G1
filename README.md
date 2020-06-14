@@ -18,6 +18,16 @@ docker-compose up -d
 
 E agora, poderá aceder a aplicação em [http://localhost:8080](http://localhost:8080)
 
+Para iniciar sessão no Wordpress pode criar uma conta ou iniciar com os perfis já criados:
+
+Administrator
+User: Administrador
+Pass: Administrador
+
+Member
+User: Member
+Pass: Member
+
 ## Membros do Grupo e Requisitos
 
 | N° Aluno | Nome             | Requisito |
