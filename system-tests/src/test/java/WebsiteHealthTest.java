@@ -15,7 +15,7 @@ public class WebsiteHealthTest extends WebDriverSetup {
      * Confirms the homepage is loading correctly by checking its title.
      */
     @Test
-    public void homepageReturnsOK() {
+    public void testHomepageReturnsOK() {
         driver.get(baseUrl);
         assert(driver.getTitle().contains("ESII-WP-G1"));
     }
@@ -24,7 +24,7 @@ public class WebsiteHealthTest extends WebDriverSetup {
      * Confirms the Covid Evolution page is being loaded by checking its title.
      */
     @Test
-    public void covidEvolutionReturnsOK() {
+    public void testCovidEvolutionReturnsOK() {
         goToMenuPageAndCheckTitle("menu-item-56", "Covid Evolution");
     }
 
@@ -32,7 +32,7 @@ public class WebsiteHealthTest extends WebDriverSetup {
      * Confirms the Covid Spread page is being loaded by checking its title.
      */
     @Test
-    public void covidSpreadReturnsOK() {
+    public void testCovidSpreadReturnsOK() {
         goToMenuPageAndCheckTitle("menu-item-57", "Covid Spread");
     }
 
@@ -40,7 +40,7 @@ public class WebsiteHealthTest extends WebDriverSetup {
      * Confirms the Covid Queries page is being loaded by checking its title.
      */
     @Test
-    public void covidQueriesReturnsOK() {
+    public void testCovidQueriesReturnsOK() {
         goToMenuPageAndCheckTitle("menu-item-55", "Covid Queries");
     }
 
@@ -48,7 +48,7 @@ public class WebsiteHealthTest extends WebDriverSetup {
      * Confirms the Covid Wiki page is being loaded by checking its title.
      */
     @Test
-    public void covidWikiReturnsOK() {
+    public void testCovidWikiReturnsOK() {
         goToMenuPageAndCheckTitle("menu-item-203", "Covid-19");
     }
 
@@ -56,7 +56,7 @@ public class WebsiteHealthTest extends WebDriverSetup {
      * Confirms the Covid Scientific Discoveries page is being loaded by checking its title.
      */
     @Test
-    public void covidScientificReturnsOK() {
+    public void testCovidScientificReturnsOK() {
         goToMenuPageAndCheckTitle("menu-item-58", "Covid Scientific Discoveries");
     }
 
@@ -64,7 +64,7 @@ public class WebsiteHealthTest extends WebDriverSetup {
      * Confirms the About Us page is being loaded by checking its title.
      */
     @Test
-    public void aboutUsReturnsOK() {
+    public void testAboutUsReturnsOK() {
         goToFooterPageAndCheckTitle("#footer-col3 > aside > ul > li.page_item.page-item-39 > a", "About Us");
     }
 
@@ -72,7 +72,7 @@ public class WebsiteHealthTest extends WebDriverSetup {
      * Confirms the Contact Us page is being loaded by checking its title.
      */
     @Test
-    public void contactUsReturnsOK() {
+    public void testContactUsReturnsOK() {
         goToFooterPageAndCheckTitle("#footer-col3 > aside > ul > li.page_item.page-item-35 > a", "Contact Us");
     }
 
@@ -80,7 +80,7 @@ public class WebsiteHealthTest extends WebDriverSetup {
      * Confirms the Covid FAQ page is being loaded by checking its title.
      */
     @Test
-    public void covidFAQReturnsOK() {
+    public void testCovidFAQReturnsOK() {
         goToFooterPageAndCheckTitle("#footer-col3 > aside > ul > li.page_item.page-item-32 > a", "Covid FAQ");
     }
 
@@ -88,7 +88,7 @@ public class WebsiteHealthTest extends WebDriverSetup {
      * Confirms the Privacy Policy page is being loaded by checking its title.
      */
     @Test
-    public void privacyPolicyReturnsOK() {
+    public void testPrivacyPolicyReturnsOK() {
         goToFooterPageAndCheckTitle("#footer-col3 > aside > ul > li.page_item.page-item-239 > a", "Privacy Policy");
     }
 

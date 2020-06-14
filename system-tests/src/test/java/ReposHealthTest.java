@@ -29,7 +29,7 @@ public class ReposHealthTest {
      * @throws IOException
      */
     @Test
-    public void groupRepoIsHealthy() throws IOException {
+    public void testGroupRepoIsHealthy() throws IOException {
         checkRepoHealth(groupGitRepo);
     }
 
@@ -39,7 +39,7 @@ public class ReposHealthTest {
      * @throws IOException
      */
     @Test
-    public void teachersRepoIsHealthy() throws IOException {
+    public void testTeachersRepoIsHealthy() throws IOException {
         checkRepoHealth(teachersESIIGitRepo);
     }
 

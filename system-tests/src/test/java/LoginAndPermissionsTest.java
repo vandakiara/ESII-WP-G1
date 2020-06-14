@@ -51,19 +51,21 @@ public class LoginAndPermissionsTest extends WebDriverSetup {
      * Performs a login with an admin user and confirms the admin page appears after login.
      */
     @Test
-    public void loginTest() {
+    public void testLogin() {
         login("admin", "admin");
 
         // check for the presence of the wp-admin bar on top
         new WebDriverWait(driver, 10)
                 .until(ExpectedConditions.presenceOfElementLocated(By.id("wp-admin-bar-root-default")));
+
+        logout();
     }
 
     /**
      * Tries to perform a login with an nonexistent user and checks for the error once it fails.
      */
     @Test
-    public void unregisteredUserCantLoginTest() {
+    public void testUnregisteredUserCantLogin() {
         login("randomUser", "pass");
 
         // check for the alert message that shows when an unregistered user tries to login.
@@ -75,7 +77,7 @@ public class LoginAndPermissionsTest extends WebDriverSetup {
      * Confirms is user is able to register and get a confirmation email.
      */
     @Test
-    public void userIsAbleToRegisterTest() {
+    public void testUserIsAbleToRegister() {
         final String email = inbox.getEmailAddress();
 
         register(email);
@@ -109,11 +111,15 @@ public class LoginAndPermissionsTest extends WebDriverSetup {
      * the presence of the menu item for the website Analytics.
      */
     @Test
-    public void memberHasAccessToAnalyticsTest() {
+    public void testMemberHasAccessToAnalytics() {
         login("member", "Member");
 
         new WebDriverWait(driver, 10)
                 .until(ExpectedConditions.presenceOfElementLocated(By.id("menu-item-222")));
+
+        driver.findElement(By.cssSelector("#footer-col1 > aside > ul > li > a")).click();
+
+        driver.findElement(By.cssSelector("#user-registration > div > p:nth-child(4) > a")).click();
     }
 
     /**
@@ -121,7 +127,7 @@ public class LoginAndPermissionsTest extends WebDriverSetup {
      * the presence of the menu item for the Covid Scientific Discoveries Repository.
      */
     @Test
-    public void adminHasAccessToCovidRepoTest() {
+    public void testAdminHasAccessToCovidRepo() {
         login("admin", "admin");
 
         driver.get(baseUrl);
@@ -129,6 +135,7 @@ public class LoginAndPermissionsTest extends WebDriverSetup {
         new WebDriverWait(driver, 10)
                 .until(ExpectedConditions.presenceOfElementLocated(By.id("menu-item-234")));
 
+        logout();
     }
 
     /**
@@ -152,6 +159,22 @@ public class LoginAndPermissionsTest extends WebDriverSetup {
         passwordField.sendKeys(password);
 
         driver.findElement(By.name("login")).click();
+    }
+
+    /**
+     * Method to logout after having logged in.
+     */
+    private void logout() {
+        driver.get(baseUrl);
+
+        driver.findElement(By.cssSelector("#footer-col1 > aside > ul > li > a")).click();
+
+        driver.findElement(By.cssSelector("#user-registration > div > p:nth-child(4) > a")).click();
+
+        WebElement loggedOutWarning = new WebDriverWait(driver, 10)
+                .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#login > p.message")));
+
+        assert(loggedOutWarning.getText().contains("You are now logged out"));
     }
 
     /**
