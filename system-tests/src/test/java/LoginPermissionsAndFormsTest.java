@@ -3,6 +3,9 @@ import com.mailslurp.api.api.WaitForControllerApi;
 import com.mailslurp.client.ApiException;
 import com.mailslurp.models.Email;
 import com.mailslurp.models.Inbox;
+import io.qameta.allure.Description;
+import io.qameta.allure.Step;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -19,11 +22,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests to check login and registration are working properly,
- * as well as permissions.
+ * as well as permissions, and forms submission.
  *
  * @author Vanda Barata (vsfba1@iscte-iul.pt)
  */
-public class LoginAndPermissionsTest extends WebDriverSetup {
+public class LoginPermissionsAndFormsTest extends WebDriverSetup {
 
     /**
      * Inbox to be used with the random generated email.
@@ -51,6 +54,8 @@ public class LoginAndPermissionsTest extends WebDriverSetup {
      * Performs a login with an admin user and confirms the admin page appears after login.
      */
     @Test
+    @Story("Admin user logs in and confirms login is successfull by checking wp-admin bar on top")
+    @Description("Login with admin user and confirmation of wp-admin bar")
     public void testLogin() {
         login("admin", "admin");
 
@@ -65,6 +70,8 @@ public class LoginAndPermissionsTest extends WebDriverSetup {
      * Tries to perform a login with an nonexistent user and checks for the error once it fails.
      */
     @Test
+    @Story("Unregistered user tries to log in and fails")
+    @Description("Failed login with unregistered user")
     public void testUnregisteredUserCantLogin() {
         login("randomUser", "pass");
 
@@ -77,6 +84,8 @@ public class LoginAndPermissionsTest extends WebDriverSetup {
      * Confirms is user is able to register and get a confirmation email.
      */
     @Test
+    @Story("User registers and receives confirmation email")
+    @Description("User is able to register and get a confirmation email")
     public void testUserIsAbleToRegister() {
         final String email = inbox.getEmailAddress();
 
@@ -111,6 +120,8 @@ public class LoginAndPermissionsTest extends WebDriverSetup {
      * the presence of the menu item for the website Analytics.
      */
     @Test
+    @Story("Member user logs in and has access to Website Analytics")
+    @Description("Member user is able to login and have access to the Website Analytics tab")
     public void testMemberHasAccessToAnalytics() {
         login("member", "Member");
 
@@ -127,6 +138,8 @@ public class LoginAndPermissionsTest extends WebDriverSetup {
      * the presence of the menu item for the Covid Scientific Discoveries Repository.
      */
     @Test
+    @Story("Administrator user logs in and has access to Covid Scientific Discoveries Repository")
+    @Description("Administrator user is able to login and have access to the Covid Scientific Discoveries Repository tab")
     public void testAdminHasAccessToCovidRepo() {
         login("admin", "admin");
 
@@ -139,11 +152,37 @@ public class LoginAndPermissionsTest extends WebDriverSetup {
     }
 
     /**
+     * Submits a contact us form and checks for the email having been sent.
+     */
+    @Test
+    @Story("User sends an email through the Contact Us form and confirms the receipt on their own inbox")
+    @Description("Form is submitted in the Contact Us page and the receipt is confirmed in the sender's inbox")
+    public void testContactUsFormSubmission() {
+        final String email = inbox.getEmailAddress();
+
+        submitContactUsForm(email);
+
+        // receive a submission confirmation email from wordpress using mailslurp
+        WaitForControllerApi waitForControllerApi = new WaitForControllerApi(mailslurpClient);
+
+        try {
+            // wait for latest unread email in the inbox
+            Email mail = waitForControllerApi.waitForLatestEmail(inbox.getId(), 10000L, true);
+
+            // confirm the user received the form submission email
+            assertTrue(Objects.requireNonNull(mail.getSubject()).contains("Submission Confirmation"));
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Performs a login with given username and password.
      *
      * @param username  username to be used to login.
      * @param password  password to be used to login.
      */
+    @Step("Login with user {0} and password {1}")
     private void login(String username, String password) {
         driver.get(baseUrl);
 
@@ -164,6 +203,7 @@ public class LoginAndPermissionsTest extends WebDriverSetup {
     /**
      * Method to logout after having logged in.
      */
+    @Step("Logout from admin session")
     private void logout() {
         driver.get(baseUrl);
 
@@ -180,8 +220,9 @@ public class LoginAndPermissionsTest extends WebDriverSetup {
     /**
      * Performs a registration with given email and password.
      *
-     *  @param email     email to be used for registration.
+     * @param email email to be used for registration.
      */
+    @Step("Register new user with email {0}")
     private void register(String email) {
         driver.get(baseUrl);
 
@@ -224,6 +265,46 @@ public class LoginAndPermissionsTest extends WebDriverSetup {
 
         new WebDriverWait(driver, 10)
                 .until(ExpectedConditions.presenceOfElementLocated(By.id("ur-submit-message-node")));
+    }
 
+    /**
+     * Submits a Contact Us form with given email.
+     *
+     * @param email email to be used for contacting the website admin.
+     */
+    @Step("Submit Contact Us form, from email {0}")
+    private void submitContactUsForm(String email) {
+        driver.get(baseUrl);
+
+        driver.findElement(By.cssSelector("#footer-col3 > aside > ul > li.page_item.page-item-35 > a")).click();
+
+        WebElement nameField = new WebDriverWait(driver, 10)
+                .until(ExpectedConditions.presenceOfElementLocated(By.id("nf-field-1")));
+
+        WebElement sujectField = new WebDriverWait(driver, 10)
+                .until(ExpectedConditions.presenceOfElementLocated(By.id("nf-field-5")));
+
+        WebElement emailField = new WebDriverWait(driver, 10)
+                .until(ExpectedConditions.presenceOfElementLocated(By.id("nf-field-2")));
+
+        WebElement messageField = new WebDriverWait(driver, 10)
+                .until(ExpectedConditions.presenceOfElementLocated(By.id("nf-field-3")));
+
+        WebElement submitButton = new WebDriverWait(driver, 10)
+                .until(ExpectedConditions.presenceOfElementLocated(By.id("nf-field-4")));
+
+        nameField.sendKeys("testName");
+
+        sujectField.sendKeys("testSubject");
+
+        emailField.sendKeys(email);
+
+        messageField.sendKeys("testMessage");
+
+        submitButton.click();
+
+        // waits for the successful submit page to appear
+        new WebDriverWait(driver, 10)
+                .until(ExpectedConditions.presenceOfElementLocated(By.id("post-35")));
     }
 }

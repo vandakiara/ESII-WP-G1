@@ -38,7 +38,7 @@ public class WebDriverSetup {
         System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver");
 
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless"); // to run without graphical mode
+        // options.addArguments("--headless"); // to run without graphical mode
 
         // solution to avoid tests failing due to problems with the chromedriver
         // taken from https://stackoverflow.com/a/52340526
