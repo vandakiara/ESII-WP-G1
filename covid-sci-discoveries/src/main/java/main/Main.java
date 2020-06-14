@@ -11,7 +11,8 @@ public class Main {
 		VertxOptions options = new VertxOptions();
 		options.setBlockedThreadCheckInterval(1000000);
 		Vertx.vertx(options).createHttpServer().requestHandler(request -> {
-			request.response().putHeader("content-type", "text/html").end(auxMain());
+			if(request.absoluteURI().equals("http://localhost:3002/"))
+				request.response().putHeader("content-type", "text/html").end(auxMain());
 		}).listen(3002);
 
 	}

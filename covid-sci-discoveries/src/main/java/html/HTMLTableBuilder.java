@@ -51,7 +51,7 @@ public class HTMLTableBuilder {
 			csvPath = new File(ini.get("Paths", "csvPath"));
 			hrefPath = ini.get("Paths", "hrefPath");
 		} catch (Exception e) {
-			System.out.println("Error while trying to read ini file.");
+			System.out.println("Error while trying to read ini file.\n");
 		}
 
 		table.append(HTML_START);
@@ -95,13 +95,11 @@ public class HTMLTableBuilder {
 			}
 			csvReader.close();
 			if (counter == 0) {
-				System.out.println("There are no files from which to make a table out of.");
+				System.out.println("There are no files from which to make a table out of.\n");
 				return null;
 			}
 		} catch (Exception e) {
-			System.out.println(
-					"Could not find the CSV file, or could not read from said file, while trying to construct the HTML table.");
-			e.printStackTrace();
+			System.out.println("Could not find the CSV file, or could not read from said file, while trying to construct the HTML table. Verify if the path to the directory is properly set on the config.ini, and if said file is present onthe directory from which you are trying to run this service.\\n");
 		}
 		return this.build();
 	}
