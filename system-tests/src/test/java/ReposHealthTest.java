@@ -1,7 +1,9 @@
+import io.qameta.allure.Description;
+import io.qameta.allure.Step;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -26,21 +28,21 @@ public class ReposHealthTest {
 
     /**
      * Checks if the group github repo is accessible.
-     *
-     * @throws IOException
      */
     @Test
-    public void groupRepoIsHealthy() throws IOException {
+    @Story("Group's base github repository is returning a 200 OK response")
+    @Description("Group's base github repository returns a 200 OK response")
+    public void testGroupRepoIsHealthy() {
         checkRepoHealth(groupGitRepo);
     }
 
     /**
      * Checks if the teacher's github repo is accessible.
-     *
-     * @throws IOException
      */
     @Test
-    public void teachersRepoIsHealthy() throws IOException {
+    @Story("Teacher's github respository is returning a 200 OK response")
+    @Description("Teacher's github respository returns a 200 OK response")
+    public void testTeachersRepoIsHealthy() {
         checkRepoHealth(teachersESIIGitRepo);
     }
 
@@ -48,14 +50,17 @@ public class ReposHealthTest {
      * Method to confirm that the git repo is healthy.
      * Makes a GET request and checks if the response is "200" (OK).
      *
-     * @param url           The url for the git repo being checked.
-     * @throws IOException
+     * @param url   The url for the git repo being checked.
      */
-    private void checkRepoHealth(String url) throws IOException {
-        HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
-        final int responseCode = con.getResponseCode();
-
-        assertEquals(200, responseCode);
+    @Step("Check github repository {0} for a 200 OK response")
+    private void checkRepoHealth(String url) {
+        try {
+            HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
+            final int responseCode = con.getResponseCode();
+            assertEquals(200, responseCode);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
