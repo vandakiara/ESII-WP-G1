@@ -15,6 +15,14 @@
     "retry" : 102
   }
 }, {
+  "buildOrder" : 1,
+  "reportUrl" : "../1/index.html",
+  "reportName" : "default",
+  "data" : {
+    "run" : 19,
+    "retry" : 102
+  }
+}, {
   "buildOrder" : 8,
   "reportUrl" : "../8/index.html",
   "reportName" : "default",
@@ -149,13 +157,5 @@
   "data" : {
     "run" : 19,
     "retry" : 69
-  }
-}, {
-  "buildOrder" : 2,
-  "reportUrl" : "../2/index.html",
-  "reportName" : "default",
-  "data" : {
-    "run" : 19,
-    "retry" : 68
   }
 } ]

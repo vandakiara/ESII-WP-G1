@@ -39,6 +39,7 @@ RUN apt-add-repository ppa:qameta/allure \
      allure \
      wget \
      xvfb \
+     vim \
      cron
 
 # Downloading and installing Chrome
