@@ -94,8 +94,8 @@ public class PDF_Extractor {
 			csvReader.close();
 			csvPath.delete();
 			tempFile.renameTo(csvPath);
-		} catch (IOException e) {
-			System.out.println("Could not find the CSV file, or could not read from said file.");
+		} catch (Exception e) {
+			System.out.println("An error occurred while trying to detected deleted files.");
 			e.printStackTrace();
 		}
 	}
@@ -127,7 +127,7 @@ public class PDF_Extractor {
 			}
 			pdfFileToBeExtractedList.removeAll(filesThatExistInTheCSV);
 
-		} catch (IOException e) {
+		} catch (Exception e) {
 			System.out.println("Could not find the CSV file, or could not read from said file.");
 			e.printStackTrace();
 		}
@@ -175,8 +175,8 @@ public class PDF_Extractor {
 
 			}
 			csvWriter.close();
-		} catch (IOException e) {
-			System.out.println("Error opening file while trying to extract PDF metadata.");
+		} catch (Exception e) {
+			System.out.println("Error while trying to extract PDF metadata.");
 			e.printStackTrace();
 		}
 	}
