@@ -63,7 +63,7 @@ services:
       - 3000:3000
     networks:
       - wp_network
-      
+
   # JAVA COVID-GRAPH-SPREAD
   java-covid-graph-spread:
     container_name: java-covid-graph-spread
@@ -73,7 +73,7 @@ services:
     networks:
       - wp_network
 
-    # System-tests
+  # System-tests
   system-tests:
     container_name: system-tests
     image: vandabarataiscte/test-docker:1.0
@@ -82,9 +82,25 @@ services:
     networks:
       - wp_network
 
+  # Allure Report Service for system-tests reports
+  allure:
+    container_name: allure_system_tests
+    image: frankescobar/allure-docker-service:latest
+    environment:
+      CHECK_RESULTS_EVERY_SECONDS: 1
+      KEEP_HISTORY: "TRUE"
+      KEEP_HISTORY_LATEST: 25
+    ports:
+      - "5050:5050"
+    volumes:
+      - ./system-tests/allure-results:/app/allure-results
+    networks:
+      - wp_network
+
 networks:
-    wp_network:
+  wp_network:
 volumes:
-    wordpress:
-    db:
-    system-tests:
+  wordpress:
+  db:
+  system-tests:
+  allure:
