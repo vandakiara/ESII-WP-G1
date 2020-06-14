@@ -58,13 +58,14 @@ RUN wget --no-verbose -O /tmp/chromedriver.zip https://chromedriver.storage.goog
     && chmod 755 src/test/resources \
     && rm /tmp/chromedriver.zip
 
-COPY cron-monitoring /etc/cron.d/cron-monitoring
+# Copy cronjob to run tests locally every 2 hours
+COPY cronjobs/cron-monitoring-docker /etc/cron.d/cron-monitoring-docker
 
-# Give execution rights on the cron job to run the tests every 2 hours
-RUN chmod 644 /etc/cron.d/cron-monitoring
+# Give execution rights to the cron job
+RUN chmod 644 /etc/cron.d/cron-monitoring-docker
 
 # Apply cron job
-RUN crontab /etc/cron.d/cron-monitoring
+RUN crontab /etc/cron.d/cron-monitoring-docker
 
 # Create log file to be able to run tail
 RUN touch /var/log/cron.log
