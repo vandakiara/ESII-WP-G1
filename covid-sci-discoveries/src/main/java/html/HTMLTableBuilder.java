@@ -10,8 +10,8 @@ public class HTMLTableBuilder {
 	private final File csvPath = new File("\\wordpress\\wp-content\\uploads\\simple-file-list\\metadata.csv");
 	/** Character or string to be used as a delimiter for the CSV file */
 	private final String DELIMITER = ";";
-	/** Path to the directory where the required PDF files are stored. */
-	private final File directoryPath = new File("\\wordpress\\wp-content\\uploads\\simple-file-list");
+	/** Path to the file directory, for the table links. */
+	private final String hrefPath = "http://localhost:8080/wp-content/uploads/simple-file-list";
 	/** StrinBuilder that will hold the html code */
 	private final StringBuilder table = new StringBuilder();
 	/**
@@ -126,7 +126,7 @@ public class HTMLTableBuilder {
 				for (String value : values) {
 					if (counter == 0) {
 						sb.append(COLUMN_START);
-						sb.append("<a href=\"" + directoryPath + "\\" + filename + "`\">");
+						sb.append("<a target=\"_blank\" href=\"" + hrefPath + "\\" + filename + "\">");
 						sb.append(value);
 						sb.append("</a>");
 						sb.append(COLUMN_END);
