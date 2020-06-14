@@ -1,11 +1,14 @@
 FROM picoded/ubuntu-openjdk-8-jdk
+MAINTAINER Vanda Barata (vsfba1@iscte-iul.pt)
 
+# Copy src and pom.xml to be able to run the system-tests
 COPY src src
-
 COPY pom.xml /workspace/pom.xml
 
+# Remove the local chromedriver since it's not needed inside the container
 RUN rm src/test/resources/chromedriver
 
+# Install needed software such as apt-add-repository
 RUN apt-get update \
     && apt-get install -y software-properties-common
 
@@ -35,7 +38,8 @@ RUN apt-add-repository ppa:qameta/allure \
      pgp \
      allure \
      wget \
-     xvfb
+     xvfb \
+     cron
 
 # Downloading and installing Chrome
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
@@ -53,6 +57,17 @@ RUN wget --no-verbose -O /tmp/chromedriver.zip https://chromedriver.storage.goog
     && chmod 755 src/test/resources \
     && rm /tmp/chromedriver.zip
 
+COPY cron-monitoring /etc/cron.d/cron-monitoring
+
+# Give execution rights on the cron job
+RUN chmod 644 /etc/cron.d/cron-monitoring
+
+# Apply cron job
+RUN crontab /etc/cron.d/cron-monitoring
+
+# Create log file to be able to run tail
+RUN touch /var/log/cron.log
+
 WORKDIR /workspace
 
-CMD tail -f /dev/null
+CMD CMD cron && tail -f /var/log/cron.log
