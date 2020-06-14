@@ -236,4 +236,12 @@ public class PDF_Extractor {
 	public ArrayList<File> getPdfFileList() {
 		return pdfFileList;
 	}
+	
+	public File getCSVPath() {
+		return csvPath;
+	}
+	
+	public ArrayList<File> getPdfFileToBeExtractedList() {
+		return pdfFileToBeExtractedList;
+	}
 }

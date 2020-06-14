@@ -55,6 +55,7 @@ public class HTMLTableBuilder {
 			String row;
 			String[] htmlRowValues = new String[4];
 			String[] headers = { "Article title", "Journal name", "Publication year", "Authors" };
+			int counter = 0;
 			addTableHeader(headers);
 			BufferedReader csvReader = new BufferedReader(new FileReader(csvPath.getAbsolutePath()));
 			while ((row = csvReader.readLine()) != null) {
@@ -64,8 +65,13 @@ public class HTMLTableBuilder {
 				htmlRowValues[2] = csvLineData[3];
 				htmlRowValues[3] = csvLineData[4];
 				addRowValues(csvLineData[0], htmlRowValues);
+				counter++;
 			}
 			csvReader.close();
+			if(counter == 0) {
+				System.out.println("There are no files from which to make a table out of.");
+				return null;
+			}
 		} catch (IOException e) {
 			System.out.println(
 					"Could not find the CSV file, or could not read from said file, while trying to construct the HTML table.");

@@ -1,6 +1,7 @@
 package main;
 
 import html.HTMLTableBuilder;
+import io.vertx.core.Vertx;
 import pdf.extractor.PDF_Extractor;
 
 public class Main {
@@ -14,7 +15,12 @@ public class Main {
 		extractor.printListOfPDFFilesToBeExtracted();
 		extractor.extractPDFmetadataToCSV();
 		HTMLTableBuilder builder = new HTMLTableBuilder();
-		System.out.println(builder.buildTable());
+		String htmlTable = builder.buildTable();
+
+		Vertx.vertx().createHttpServer().requestHandler(request -> {
+			request.response().putHeader("content-type", "text/html").end(htmlTable);
+		}).listen(3002);
+
 	}
 
 }
