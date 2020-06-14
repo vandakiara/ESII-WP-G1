@@ -46,7 +46,6 @@ public class LoginPermissionsAndFormsTest extends WebDriverSetup {
                     "The test checking if login with user \"admin\" is possible has failed. Here's what happened: \n\n" + e);
             fail(e);
         }
-
     }
 
     /**
@@ -134,7 +133,6 @@ public class LoginPermissionsAndFormsTest extends WebDriverSetup {
                     "The test checking if a Member user has access to Website Analytics has failed. Here's what happened: \n\n" + e);
             fail(e);
         }
-
     }
 
     /**
@@ -192,7 +190,6 @@ public class LoginPermissionsAndFormsTest extends WebDriverSetup {
                     "The test checking if it's possible to submit a Contact Us form has failed. Here's what happened: \n\n" + e);
             fail(e);
         }
-
     }
 
     /**
@@ -222,7 +219,6 @@ public class LoginPermissionsAndFormsTest extends WebDriverSetup {
         } catch (Exception e) {
             throw new Exception("Logging in with user " + username + " and password " + password + " wasn't possible. Here's what happened: \n" + e);
         }
-
     }
 
     /**
@@ -347,6 +343,6 @@ public class LoginPermissionsAndFormsTest extends WebDriverSetup {
         } catch (Exception e) {
             throw new Exception("Submitting Contact Us form from email " + email + " wasn't possible. Here's what happened: \n" + e);
         }
-
     }
+
 }
