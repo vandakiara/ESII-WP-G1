@@ -3,10 +3,11 @@ package html;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-
 import org.ini4j.Wini;
 
 public class HTMLTableBuilder {
+	/** Based on https://gist.github.com/2sbsbsb/2951464 */
+
 	/** Path to the CSV file where the metadata of the PDF files is stored. */
 	private File csvPath;
 	/** Character or string to be used as a delimiter for the CSV file */
@@ -38,7 +39,7 @@ public class HTMLTableBuilder {
 	public static final String COLUMN_END = "</td>";
 
 	/** Path to the INI configuration file. */
-	private final String CONFIG = "config.ini";
+	private final String CONFIG = "assets/config.ini";
 
 	/**
 	 * Constructor for the HTMLTableBuilder class, gives the basic opening and
@@ -117,15 +118,15 @@ public class HTMLTableBuilder {
 		} else {
 			int lastIndex = table.lastIndexOf(TABLE_END);
 			if (lastIndex > 0) {
-				StringBuilder sb = new StringBuilder();
-				sb.append(ROW_START);
+				StringBuilder stringBuilder = new StringBuilder();
+				stringBuilder.append(ROW_START);
 				for (String value : values) {
-					sb.append(HEADER_START);
-					sb.append(value);
-					sb.append(HEADER_END);
+					stringBuilder.append(HEADER_START);
+					stringBuilder.append(value);
+					stringBuilder.append(HEADER_END);
 				}
-				sb.append(ROW_END);
-				table.insert(lastIndex, sb.toString());
+				stringBuilder.append(ROW_END);
+				table.insert(lastIndex, stringBuilder.toString());
 			}
 		}
 	}
@@ -145,27 +146,27 @@ public class HTMLTableBuilder {
 			int lastIndex = table.lastIndexOf(ROW_END);
 			if (lastIndex > 0) {
 				int index = lastIndex + ROW_END.length();
-				StringBuilder sb = new StringBuilder();
-				sb.append(ROW_START);
+				StringBuilder stringBuilder = new StringBuilder();
+				stringBuilder.append(ROW_START);
 				int counter = 0;
 				for (String value : values) {
 					if (counter == 0) {
-						sb.append(COLUMN_START);
-						sb.append("<a target=\"_blank\" href=\"" + hrefPath + "\\" + filename + "\">");
-						sb.append(value);
-						sb.append("</a>");
-						sb.append(COLUMN_END);
+						stringBuilder.append(COLUMN_START);
+						stringBuilder.append("<a target=\"_blank\" href=\"" + hrefPath + "\\" + filename + "\">");
+						stringBuilder.append(value);
+						stringBuilder.append("</a>");
+						stringBuilder.append(COLUMN_END);
 						counter++;
 					} else {
-						sb.append(COLUMN_START);
-						sb.append(value);
-						sb.append(COLUMN_END);
+						stringBuilder.append(COLUMN_START);
+						stringBuilder.append(value);
+						stringBuilder.append(COLUMN_END);
 						counter++;
 					}
 
 				}
-				sb.append(ROW_END);
-				table.insert(index, sb.toString());
+				stringBuilder.append(ROW_END);
+				table.insert(index, stringBuilder.toString());
 			}
 		}
 	}

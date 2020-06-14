@@ -28,7 +28,7 @@ public class PDF_Extractor {
 	/** Character or string to be used as a delimiter for the CSV file */
 	private final String DELIMITER = ";";
 	/** Path to the INI configuration file. */
-	private final String CONFIG = "config.ini";
+	private final String CONFIG = "assets/config.ini";
 
 	/**
 	 * Creates a PDF_Extractor object, used to extract specific metadata from PDF
