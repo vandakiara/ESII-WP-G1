@@ -3,16 +3,17 @@ package html;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
+
+import org.ini4j.Wini;
 
 public class HTMLTableBuilder {
 	/** Path to the CSV file where the metadata of the PDF files is stored. */
-	private final File csvPath = new File("\\wordpress\\wp-content\\uploads\\simple-file-list\\metadata.csv");
+	private File csvPath;
 	/** Character or string to be used as a delimiter for the CSV file */
 	private final String DELIMITER = ";";
 	/** Path to the file directory, for the table links. */
-	private final String hrefPath = "http://localhost:8080/wp-content/uploads/simple-file-list";
-	/** StrinBuilder that will hold the html code */
+	private String hrefPath = "http://localhost:8080/wp-content/uploads/simple-file-list";
+	/** StringBuilder that will hold the HTML code */
 	private final StringBuilder table = new StringBuilder();
 	/**
 	 * Number of columns that the table should have. Used for detecting unexpected
@@ -23,9 +24,12 @@ public class HTMLTableBuilder {
 	/** Variables to make the construction of the table easier to read. */
 	public static final String HTML_START = "<html>";
 	public static final String HTML_END = "</html>";
-	public static final String TABLE_START_BORDER = "<table border=\"1\">";
-	// public static final String TABLE_START = "<table>";
+	public static final String TABLE_START_BORDER = "<table class=\"table\" border=\"1\">";
 	public static final String TABLE_END = "</table>";
+	public static final String HEAD_START = "<head>";
+	public static final String HEAD_END = "</head>";
+	public static final String BODY_START = "<body>";
+	public static final String BODY_END = "</body>";
 	public static final String HEADER_START = "<th>";
 	public static final String HEADER_END = "</th>";
 	public static final String ROW_START = "<tr>";
@@ -33,14 +37,36 @@ public class HTMLTableBuilder {
 	public static final String COLUMN_START = "<td>";
 	public static final String COLUMN_END = "</td>";
 
+	/** Path to the INI configuration file. */
+	private final String CONFIG = "config.ini";
+
 	/**
 	 * Constructor for the HTMLTableBuilder class, gives the basic opening and
 	 * closing characters to the HTML table.
 	 */
 	public HTMLTableBuilder() {
+		Wini ini;
+		try {
+			ini = new Wini(new File(CONFIG));
+			csvPath = new File(ini.get("Paths", "csvPath"));
+			hrefPath = ini.get("Paths", "hrefPath");
+		} catch (Exception e) {
+			System.out.println("Error while trying to read ini file.");
+		}
+
 		table.append(HTML_START);
+		table.append(HEAD_START);
+		table.append("<!-- Latest compiled and minified CSS -->\r\n"
+				+ "<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">\r\n"
+				+ "\r\n" + "<!-- Optional themes -->\r\n"
+				+ "<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css\" integrity=\"sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp\" crossorigin=\"anonymous\">\r\n"
+				+ "\r\n" + "<!-- Latest compiled and minified JavaScript -->\r\n"
+				+ "<script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\" integrity=\"sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa\" crossorigin=\"anonymous\"></script>");
+		table.append(HEAD_END);
+		table.append(BODY_START);
 		table.append(TABLE_START_BORDER);
 		table.append(TABLE_END);
+		table.append(BODY_END);
 		table.append(HTML_END);
 	}
 
@@ -68,11 +94,11 @@ public class HTMLTableBuilder {
 				counter++;
 			}
 			csvReader.close();
-			if(counter == 0) {
+			if (counter == 0) {
 				System.out.println("There are no files from which to make a table out of.");
 				return null;
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			System.out.println(
 					"Could not find the CSV file, or could not read from said file, while trying to construct the HTML table.");
 			e.printStackTrace();
@@ -110,8 +136,9 @@ public class HTMLTableBuilder {
 	 * Adds table rows to the desired HTML table based on the provided list of
 	 * values. The first row links to the original document.
 	 * 
-	 * @param filename Name of the original file on which this row's data was extracted from.
-	 * @param values Values to be added as a row in the desired HTML table.
+	 * @param filename Name of the original file on which this row's data was
+	 *                 extracted from.
+	 * @param values   Values to be added as a row in the desired HTML table.
 	 */
 	public void addRowValues(String filename, String[] values) {
 		if (values.length != numberOfColumns) {
@@ -147,6 +174,7 @@ public class HTMLTableBuilder {
 
 	/**
 	 * Simple to-string method for this class.
+	 * 
 	 * @return Returns a string with the HTML code.
 	 */
 	public String build() {
