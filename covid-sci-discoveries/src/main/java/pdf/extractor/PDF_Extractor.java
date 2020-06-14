@@ -42,6 +42,8 @@ public class PDF_Extractor {
 			csvPath = new File(ini.get("Paths", "csvPath"));
 		} catch (Exception e) {
 			System.out.println("Error while trying to read ini file. Could not start the path variables.\n");
+			System.out.println("Directory path: " + directoryPath);
+			System.out.println("CSV path: " + csvPath);
 		}
 		pdfFileList = new ArrayList<File>();
 		pdfFileToBeExtractedList = new ArrayList<File>();
@@ -74,6 +76,9 @@ public class PDF_Extractor {
 		} catch (Exception e) {
 			System.out.println(
 					"Couldn't access PDF files. Verify if the path to the directory is properly set on the config.ini, and if said file is present onthe directory from which you are trying to run this service.");
+			System.out.println("Directory: " + directoryPath);
+			System.out.println("CSV: " + csvPath);
+			System.out.println("Working Directory = " + System.getProperty("user.dir"));
 		}
 	}
 
@@ -194,6 +199,7 @@ public class PDF_Extractor {
 			csvWriter.close();
 		} catch (Exception e) {
 			System.out.println("Error while trying to extract PDF metadata.\n");
+			e.printStackTrace();
 		}
 	}
 
@@ -218,7 +224,7 @@ public class PDF_Extractor {
 			System.out.println("Something went wrong with the analysis of the PDF file.\n");
 		} catch (FileNotFoundException e) {
 			System.out.println("File was not found.");
-		} catch (IOException e) {
+		} catch (Exception e) {
 			System.out.println("Something went wrong while trying to open the PDF file.\n");
 		}
 		return result;

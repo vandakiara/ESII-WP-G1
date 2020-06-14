@@ -13,7 +13,7 @@ public class HTMLTableBuilder {
 	/** Character or string to be used as a delimiter for the CSV file */
 	private final String DELIMITER = ";";
 	/** Path to the file directory, for the table links. */
-	private String hrefPath = "http://localhost:8080/wp-content/uploads/simple-file-list";
+	private String hrefPath;
 	/** StringBuilder that will hold the HTML code */
 	private final StringBuilder table = new StringBuilder();
 	/**
@@ -57,6 +57,7 @@ public class HTMLTableBuilder {
 
 		table.append(HTML_START);
 		table.append(HEAD_START);
+		table.append("<meta charset=\"UTF-8\" />");
 		table.append("<!-- Latest compiled and minified CSS -->\r\n"
 				+ "<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">\r\n"
 				+ "\r\n" + "<!-- Optional themes -->\r\n"
