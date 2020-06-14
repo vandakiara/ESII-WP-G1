@@ -1,4 +1,32 @@
 [ {
+  "buildOrder" : 3,
+  "reportUrl" : "../3/index.html",
+  "reportName" : "default",
+  "data" : {
+    "duration" : 41235490
+  }
+}, {
+  "buildOrder" : 2,
+  "reportUrl" : "../2/index.html",
+  "reportName" : "default",
+  "data" : {
+    "duration" : 41227182
+  }
+}, {
+  "buildOrder" : 1,
+  "reportUrl" : "../1/index.html",
+  "reportName" : "default",
+  "data" : {
+    "duration" : 35425700
+  }
+}, {
+  "buildOrder" : 1,
+  "reportUrl" : "../1/index.html",
+  "reportName" : "default",
+  "data" : {
+    "duration" : 35425700
+  }
+}, {
   "buildOrder" : 1,
   "reportUrl" : "../1/index.html",
   "reportName" : "default",
@@ -109,33 +137,5 @@
   "reportName" : "default",
   "data" : {
     "duration" : 34417379
-  }
-}, {
-  "buildOrder" : 7,
-  "reportUrl" : "../7/index.html",
-  "reportName" : "default",
-  "data" : {
-    "duration" : 34413552
-  }
-}, {
-  "buildOrder" : 6,
-  "reportUrl" : "../6/index.html",
-  "reportName" : "default",
-  "data" : {
-    "duration" : 34398472
-  }
-}, {
-  "buildOrder" : 5,
-  "reportUrl" : "../5/index.html",
-  "reportName" : "default",
-  "data" : {
-    "duration" : 34390159
-  }
-}, {
-  "buildOrder" : 4,
-  "reportUrl" : "../4/index.html",
-  "reportName" : "default",
-  "data" : {
-    "duration" : 34381736
   }
 } ]
