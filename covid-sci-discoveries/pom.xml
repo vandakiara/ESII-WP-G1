@@ -28,6 +28,7 @@
 			<version>3.5.4</version>
 		</dependency>
 	</dependencies>
+	<!-- https://mvnrepository.com/artifact/org.ini4j/ini4j -->
 	<repositories>
 		<repository>
 			<id>icm</id>
@@ -35,4 +36,79 @@
 			<url>http://maven.icm.edu.pl/artifactory/repo</url>
 		</repository>
 	</repositories>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.0.1</version>
+				<executions>
+					<execution>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<includeScope>runtime</includeScope>
+							<outputDirectory>${project.build.directory}/${application.dependencies}</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.0.2</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>${application.dependencies}</classpathPrefix>
+							<mainClass>${application.mainclass}</mainClass>
+							<!-- match with base version string naming of Maven Dependency Plugin -->
+							<useUniqueVersions>false</useUniqueVersions>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.0.2</version>
+				<executions>
+					<!-- Build Dockerfile -->
+					<execution>
+						<id>resources-docker</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/main/docker</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<!-- Copy base html template file -->
+					<execution>
+						<id>resources-html</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/assets</outputDirectory>
+							<resources>
+								<resource>
+									<directory>assets</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
