@@ -63,7 +63,7 @@ services:
       - 3000:3000
     networks:
       - wp_network
-      
+
   # JAVA COVID-GRAPH-SPREAD
   java-covid-graph-spread:
     container_name: java-covid-graph-spread
@@ -98,9 +98,9 @@ services:
       - wp_network
 
 networks:
-    wp_network:
+  wp_network:
 volumes:
-    wordpress:
-    db:
-    system-tests:
-    allure:
+  wordpress:
+  db:
+  system-tests:
+  allure:
