@@ -6,6 +6,13 @@
     "duration" : 35425700
   }
 }, {
+  "buildOrder" : 1,
+  "reportUrl" : "../1/index.html",
+  "reportName" : "default",
+  "data" : {
+    "duration" : 35425700
+  }
+}, {
   "buildOrder" : 8,
   "reportUrl" : "../8/index.html",
   "reportName" : "default",
@@ -130,12 +137,5 @@
   "reportName" : "default",
   "data" : {
     "duration" : 34368828
-  }
-}, {
-  "buildOrder" : 1,
-  "reportUrl" : "../1/index.html",
-  "reportName" : "default",
-  "data" : {
-    "duration" : 21199796
   }
 } ]

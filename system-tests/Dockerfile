@@ -70,4 +70,4 @@ RUN touch /var/log/cron.log
 
 WORKDIR /workspace
 
-CMD CMD cron && tail -f /var/log/cron.log
+CMD cron && tail -f /var/log/cron.log
