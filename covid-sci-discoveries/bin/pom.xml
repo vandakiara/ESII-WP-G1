@@ -17,16 +17,6 @@
 			<artifactId>cermine-impl</artifactId>
 			<version>1.14-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>io.vertx</groupId>
-			<artifactId>vertx-core</artifactId>
-			<version>3.5.4</version>
-		</dependency>
-		<dependency>
-			<groupId>io.vertx</groupId>
-			<artifactId>vertx-web</artifactId>
-			<version>3.5.4</version>
-		</dependency>
 	</dependencies>
 	<repositories>
 		<repository>
