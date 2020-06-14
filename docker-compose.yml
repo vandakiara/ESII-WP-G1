@@ -69,13 +69,13 @@ services:
     container_name: system-tests
     image: vandabarataiscte/test-docker:1.0
     volumes:
-      - system-tests/allure-results:/workspace/allure-results
+      - ./system-tests/allure-results:/workspace/allure-results
     networks:
       - wp_network
 
 networks:
-  wp_network:
+    wp_network:
 volumes:
-  wordpress:
-  db:
-  system-tests:
+    wordpress:
+    db:
+    system-tests:
