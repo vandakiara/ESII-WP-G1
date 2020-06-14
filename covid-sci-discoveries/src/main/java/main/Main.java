@@ -13,6 +13,8 @@ public class Main {
 		extractor.loadListOfPDFFilesToBeExtracted();
 		extractor.printListOfPDFFilesToBeExtracted();
 		extractor.extractPDFmetadataToCSV();
+		HTMLTableBuilder builder = new HTMLTableBuilder();
+		System.out.println(builder.buildTable());
 	}
 
 }

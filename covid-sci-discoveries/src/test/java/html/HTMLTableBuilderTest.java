@@ -8,7 +8,8 @@ public class HTMLTableBuilderTest {
 
 	@Test
 	public void testgetHTML() {
-		String html = HTMLTableBuilder.getHTMLTable();
+		HTMLTableBuilder builder = new HTMLTableBuilder();
+		String html = builder.buildTable();
 		assertTrue(html != null);
 		assertTrue(html instanceof String);
 		assertTrue(!html.isEmpty());

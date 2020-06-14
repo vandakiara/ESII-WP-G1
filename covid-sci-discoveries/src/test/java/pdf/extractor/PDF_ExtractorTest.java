@@ -9,15 +9,14 @@ public class PDF_ExtractorTest {
 
 	@Test
 	public void testConstructor() {
-		String PATH = "D:\\University\\ES II\\PDFs";
-		PDF_Extractor extractor = new PDF_Extractor(PATH);
+		PDF_Extractor extractor = new PDF_Extractor();
 		assertTrue(extractor != null);
 	}
 
 	@Test
 	public void testPopulationOfFileList() {
-		String PATH = "D:\\University\\ES II\\PDFs";
-		PDF_Extractor extractor = new PDF_Extractor(PATH);
+		PDF_Extractor extractor = new PDF_Extractor();
+		extractor.createCSVIfNotExist();
 		extractor.populateFilesList();
 		assertTrue(extractor.getPdfFileList() != null);
 		assertTrue(extractor.getPdfFileList().size() >= 0);

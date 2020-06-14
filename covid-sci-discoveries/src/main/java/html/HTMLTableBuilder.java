@@ -1,20 +1,26 @@
 package html;
+
+import java.io.BufferedReader;
 import java.io.File;
-import java.util.ArrayList;
-import pdf.extractor.PDF_Extractor;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class HTMLTableBuilder {
-	String[][] tableOfArrays;
-	String htmlCode;
-
-
-	
+	/** Path to the CSV file where the metadata of the PDF files is stored. */
+	private final File csvPath = new File("D:\\University\\ES II\\PDFs\\metadata.csv");
+	/** Character or string to be used as a delimiter for the CSV file */
+	private final String DELIMITER = ";";
+	/** Path to the directory where the required PDF files are stored. */
+	private final File directoryPath = new File("D:\\University\\ES II\\PDFs");
+	/** StrinBuilder that will hold the html code */
 	private final StringBuilder table = new StringBuilder();
-	public ArrayList<File> filePaths;
-	
-	private final int columns = 4;
-	public static String PATH = "D:\\University\\ES II\\PDFs";
-	
+	/**
+	 * Number of columns that the table should have. Used for detecting unexpected
+	 * values.
+	 */
+	private final int numberOfColumns = 4;
+
+	/** Variables to make the construction of the table easier to read. */
 	public static final String HTML_START = "<html>";
 	public static final String HTML_END = "</html>";
 	public static final String TABLE_START_BORDER = "<table border=\"1\">";
@@ -27,50 +33,56 @@ public class HTMLTableBuilder {
 	public static final String COLUMN_START = "<td>";
 	public static final String COLUMN_END = "</td>";
 
-	
-	
-	
-	public HTMLTableBuilder(String[][] tableOfArrays) {
-		this.tableOfArrays = tableOfArrays;
-		
+	/**
+	 * Constructor for the HTMLTableBuilder class, gives the basic opening and
+	 * closing characters to the HTML table.
+	 */
+	public HTMLTableBuilder() {
 		table.append(HTML_START);
 		table.append(TABLE_START_BORDER);
 		table.append(TABLE_END);
 		table.append(HTML_END);
 	}
 
-	
-	public String buildTable(String[][] table) {
-		int counter = 0;
-		int numberOfColumns = table.length;
-		String[] headers = new String[numberOfColumns];
-		int columnCounter = 0;
-		int rowCounter = 1;
-		String[] data = new String[numberOfColumns];
-
-		while (counter < numberOfColumns) {
-			headers[counter] = table[counter][0];
-			counter++;
-		}
-
-		addTableHeader(headers);
-
-		while (rowCounter < table[0].length) {
-			while (columnCounter < numberOfColumns) {
-				data[columnCounter] = table[columnCounter][rowCounter];
-				columnCounter++;
+	/**
+	 * This method reads the CSV file from the specified directory, and inserts the
+	 * data into the HTML table.
+	 * 
+	 * @return Returns a string with the desired HTML table.
+	 */
+	public String buildTable() {
+		try {
+			String row;
+			String[] htmlRowValues = new String[4];
+			String[] headers = { "Article title", "Journal name", "Publication year", "Authors" };
+			addTableHeader(headers);
+			BufferedReader csvReader = new BufferedReader(new FileReader(csvPath.getAbsolutePath()));
+			while ((row = csvReader.readLine()) != null) {
+				String[] csvLineData = row.split(DELIMITER);
+				htmlRowValues[0] = csvLineData[1];
+				htmlRowValues[1] = csvLineData[2];
+				htmlRowValues[2] = csvLineData[3];
+				htmlRowValues[3] = csvLineData[4];
+				addRowValues(csvLineData[0], htmlRowValues);
 			}
-			columnCounter = 0;
-			this.addRowValues(data);
-			data = new String[numberOfColumns];
-			rowCounter++;
+			csvReader.close();
+		} catch (IOException e) {
+			System.out.println(
+					"Could not find the CSV file, or could not read from said file, while trying to construct the HTML table.");
+			e.printStackTrace();
 		}
-
 		return this.build();
 	}
 
-	public void addTableHeader(String... values) {
-		if (values.length != columns) {
+	/**
+	 * Adds table headers to the desired HTML table based on the provided list of
+	 * values.
+	 * 
+	 * @param values Values to be turned into table headers. Each value corresponds
+	 *               to one column.
+	 */
+	public void addTableHeader(String[] values) {
+		if (values.length != numberOfColumns) {
 			System.out.println("Error column lenth");
 		} else {
 			int lastIndex = table.lastIndexOf(TABLE_END);
@@ -88,8 +100,15 @@ public class HTMLTableBuilder {
 		}
 	}
 
-	public void addRowValues(String... values) {
-		if (values.length != columns) {
+	/**
+	 * Adds table rows to the desired HTML table based on the provided list of
+	 * values. The first row links to the original document.
+	 * 
+	 * @param filename Name of the original file on which this row's data was extracted from.
+	 * @param values Values to be added as a row in the desired HTML table.
+	 */
+	public void addRowValues(String filename, String[] values) {
+		if (values.length != numberOfColumns) {
 			System.out.println("Error column lenth");
 		} else {
 			int lastIndex = table.lastIndexOf(ROW_END);
@@ -101,11 +120,10 @@ public class HTMLTableBuilder {
 				for (String value : values) {
 					if (counter == 0) {
 						sb.append(COLUMN_START);
-						sb.append("<a href=\"" + filePaths.get(0).getAbsolutePath() + "`\">");
+						sb.append("<a href=\"" + directoryPath + "\\" + filename + "`\">");
 						sb.append(value);
 						sb.append("</a>");
 						sb.append(COLUMN_END);
-						filePaths.remove(0);
 						counter++;
 					} else {
 						sb.append(COLUMN_START);
@@ -121,16 +139,12 @@ public class HTMLTableBuilder {
 		}
 	}
 
-	public static String getHTMLTable() {
-		PDF_Extractor extractor = new PDF_Extractor(PATH);
-		HTMLTableBuilder builder = new HTMLTableBuilder(extractor.getTable());
-		return "";
-
-	}
-
+	/**
+	 * Simple to-string method for this class.
+	 * @return Returns a string with the HTML code.
+	 */
 	public String build() {
 		return table.toString();
 	}
-
 
 }

@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.jdom.Element;
 import pl.edu.icm.cermine.ContentExtractor;
 import pl.edu.icm.cermine.exception.AnalysisException;
@@ -25,7 +24,7 @@ public class PDF_Extractor {
 	private ArrayList<File> pdfFileList;
 	/** List of PDF files that need to be extracted into the CSV file. */
 	private ArrayList<File> pdfFileToBeExtractedList;
-
+	/** Character or string to be used as a delimiter for the CSV file*/
 	private final String DELIMITER = ";";
 
 	/**
@@ -232,5 +231,9 @@ public class PDF_Extractor {
 			}
 		}
 		return authorString;
+	}
+	
+	public ArrayList<File> getPdfFileList() {
+		return pdfFileList;
 	}
 }
