@@ -42,6 +42,11 @@ public class TestProperties {
     public static final int COVID_QUERY_PORT = 3003;
 
     /**
+     * Port used to host the system-tests allure reports.
+     */
+    public static final int SYSTEM_TESTS_PORT =  3004;
+
+    /**
      * Email address of the WP-CMS administrator.
      */
     public static final String WP_ADMIN_MAIL = "es2wpg1@gmail.com";

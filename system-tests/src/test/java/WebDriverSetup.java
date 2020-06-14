@@ -1,5 +1,4 @@
 import com.mailslurp.api.api.InboxControllerApi;
-import com.mailslurp.api.api.WaitForControllerApi;
 import com.mailslurp.client.ApiClient;
 import com.mailslurp.client.ApiException;
 import com.mailslurp.models.Inbox;

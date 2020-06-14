@@ -198,8 +198,9 @@ public class LoginPermissionsAndFormsTest extends WebDriverSetup {
     /**
      * Performs a login with given username and password.
      *
-     * @param username  username to be used to login.
-     * @param password  password to be used to login.
+     * @param username      username to be used to login.
+     * @param password      password to be used to login.
+     * @throws Exception    exception to trigger sending a notification email.
      */
     @Step("Login with user {0} and password {1}")
     private void login(String username, String password) throws Exception {
@@ -226,6 +227,8 @@ public class LoginPermissionsAndFormsTest extends WebDriverSetup {
 
     /**
      * Method to logout after having logged in.
+     *
+     * @throws Exception    exception to trigger sending a notification email.
      */
     @Step("Logout from admin session")
     private void logout() throws Exception {
@@ -248,7 +251,8 @@ public class LoginPermissionsAndFormsTest extends WebDriverSetup {
     /**
      * Performs a registration with given email and password.
      *
-     * @param email email to be used for registration.
+     * @param email         email to be used for registration.
+     * @throws Exception    exception to trigger sending a notification email.
      */
     @Step("Register new user with email {0}")
     private void register(String email) throws Exception {
@@ -302,7 +306,8 @@ public class LoginPermissionsAndFormsTest extends WebDriverSetup {
     /**
      * Submits a Contact Us form with given email.
      *
-     * @param email email to be used for contacting the website admin.
+     * @param email         email to be used for contacting the website admin.
+     * @throws Exception    exception to trigger sending a notification email.
      */
     @Step("Submit Contact Us form, from email {0}")
     private void submitContactUsForm(String email) throws Exception {

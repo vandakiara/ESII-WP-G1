@@ -198,6 +198,7 @@ public class WebsiteHealthTest extends WebDriverSetup {
      *
      * @param menuId        the id that identifies the menu item.
      * @param titleCheck    the title we want to compare against to validate the test.
+     * @throws Exception    exception to trigger sending a notification email.
      */
     @Step("Find menu page with id {0} and check for title {1}")
     private void goToMenuPageAndCheckTitle(String menuId, String titleCheck) throws Exception {
@@ -225,6 +226,7 @@ public class WebsiteHealthTest extends WebDriverSetup {
      *
      * @param cssSelect     the css selector that identifies the item.
      * @param titleCheck    the title we want to compare against to validate the test.
+     * @throws Exception    exception to trigger sending a notification email.
      */
     @Step("Find footer page with cssSelector {0} and check for title {1}")
     private void goToFooterPageAndCheckTitle(String cssSelect, String titleCheck) throws Exception {

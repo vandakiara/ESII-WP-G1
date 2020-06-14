@@ -63,7 +63,8 @@ public class ReposHealthTest extends WebDriverSetup{
      * Method to confirm that the git repo is healthy.
      * Makes a GET request and checks if the response is "200" (OK).
      *
-     * @param url   The url for the git repo being checked.
+     * @param url           the url for the git repo being checked.
+     * @throws Exception    exception to trigger sending a notification email.
      */
     @Step("Check github repository {0} for a 200 OK response")
     private void checkRepoHealth(String url) throws Exception{
