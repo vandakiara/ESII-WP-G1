@@ -14,6 +14,8 @@
 		<application.mainclass>CovidQueryMain</application.mainclass>
 		<application.dependencies>lib</application.dependencies>
 		<application.workdir>application</application.workdir>
+		<vertx.cacheDirBase>${project.build.directory}</vertx.cacheDirBase>
+        <vertx.disableFileCaching>true</vertx.disableFileCaching>
 	</properties>
 
 	<dependencies>
