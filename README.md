@@ -6,6 +6,7 @@ Inicialmente, é necessário carregar as imagens das aplicações Java, que se e
 
 ```sh
 docker load -i docker-images/covid-evolution-diff.zip
+docker load -i docker-images/covid-graph-spread.zip
 ```
 
 ## Start
@@ -27,6 +28,11 @@ Pass: Administrador
 Member
 User: Member
 Pass: Member
+
+## Email do admin
+
+email: es2wpg1@gmail.com
+pass: iscte2020
 
 ## Membros do Grupo e Requisitos
 

@@ -64,17 +64,7 @@ services:
       - 3000:3000
     networks:
       - wp_network
-      
-  # JAVA COVID-GRAPH-SPREAD
-  # java-covid-graph-spread:
-    # container_name: java-covid-graph-spread
-    # image: covid-graph-spread:0.0.1
-    # ports:
-      # - 3001:3001
-    # networks:
-      # - wp_network
-      
-      
+ 
   # JAVA COVID_QUERY
   java-covid-query:
     container_name: java-covid-query
@@ -83,6 +73,28 @@ services:
       - 3003:3003
     networks:
       - wp_network
+
+  # JAVA COVID-SCI-DISCOVERIES
+  java-covid-sci-discoveries:
+    container_name: java-covid-sci-discoveries
+    image: covid-sci-discoveries:0.0.1
+    environment:
+      - JVM_OPTS=-Xmx12g -Xms12g -XX:MaxPermSize=200m
+    volumes:
+      - ./wordpress/wp-content/uploads/simple-file-list:/simple-file-list
+    ports:
+      - 3002:3002
+    networks:
+      - wp_network
+
+  # JAVA COVID-GRAPH-SPREAD
+  # java-covid-graph-spread:
+    # container_name: java-covid-graph-spread
+    # image: covid-graph-spread:0.0.1
+    # ports:
+      # - 3001:3001
+    # networks:
+      # - wp_network
 
   # System-tests
   system-tests:
@@ -109,9 +121,9 @@ services:
       - wp_network
 
 networks:
-    wp_network:
+  wp_network:
 volumes:
-    wordpress:
-    db:
-    system-tests:
-    allure:
+  wordpress:
+  db:
+  system-tests:
+  allure:

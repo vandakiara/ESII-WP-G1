@@ -1,41 +1,52 @@
 [ {
-  "buildOrder" : 1,
-  "reportUrl" : "../1/index.html",
+  "buildOrder" : 12,
+  "reportUrl" : "../12/index.html",
   "reportName" : "default",
   "data" : { }
 }, {
-  "buildOrder" : 1,
-  "reportUrl" : "../1/index.html",
+  "buildOrder" : 11,
+  "reportUrl" : "../11/index.html",
   "reportName" : "default",
   "data" : { }
 }, {
-  "buildOrder" : 1,
-  "reportUrl" : "../1/index.html",
+  "buildOrder" : 10,
+  "reportUrl" : "../10/index.html",
   "reportName" : "default",
   "data" : { }
+}, {
+  "buildOrder" : 9,
+  "reportUrl" : "../9/index.html",
+  "reportName" : "default",
+  "data" : {
+    "Product defects" : 2
+  }
 }, {
   "buildOrder" : 8,
   "reportUrl" : "../8/index.html",
   "reportName" : "default",
-  "data" : { }
+  "data" : {
+    "Product defects" : 3
+  }
 }, {
   "buildOrder" : 7,
   "reportUrl" : "../7/index.html",
   "reportName" : "default",
-  "data" : { }
+  "data" : {
+    "Product defects" : 5
+  }
 }, {
   "buildOrder" : 6,
   "reportUrl" : "../6/index.html",
   "reportName" : "default",
   "data" : {
-    "Product defects" : 1
+    "Product defects" : 6
   }
 }, {
   "buildOrder" : 5,
   "reportUrl" : "../5/index.html",
   "reportName" : "default",
   "data" : {
-    "Product defects" : 1
+    "Product defects" : 6
   }
 }, {
   "buildOrder" : 4,
@@ -55,44 +66,27 @@
   "buildOrder" : 2,
   "reportUrl" : "../2/index.html",
   "reportName" : "default",
-  "data" : {
-    "Product defects" : 1
-  }
+  "data" : { }
 }, {
   "buildOrder" : 1,
   "reportUrl" : "../1/index.html",
   "reportName" : "default",
-  "data" : {
-    "Product defects" : 1
-  }
+  "data" : { }
 }, {
   "buildOrder" : 1,
   "reportUrl" : "../1/index.html",
   "reportName" : "default",
-  "data" : {
-    "Product defects" : 1
-  }
+  "data" : { }
 }, {
   "buildOrder" : 1,
   "reportUrl" : "../1/index.html",
   "reportName" : "default",
-  "data" : {
-    "Product defects" : 1
-  }
+  "data" : { }
 }, {
-  "buildOrder" : 9,
-  "reportUrl" : "../9/index.html",
+  "buildOrder" : 1,
+  "reportUrl" : "../1/index.html",
   "reportName" : "default",
-  "data" : {
-    "Product defects" : 1
-  }
-}, {
-  "buildOrder" : 8,
-  "reportUrl" : "../8/index.html",
-  "reportName" : "default",
-  "data" : {
-    "Product defects" : 1
-  }
+  "data" : { }
 }, {
   "buildOrder" : 7,
   "reportUrl" : "../7/index.html",
@@ -104,20 +98,28 @@
   "buildOrder" : 6,
   "reportUrl" : "../6/index.html",
   "reportName" : "default",
-  "data" : { }
+  "data" : {
+    "Product defects" : 3
+  }
 }, {
   "buildOrder" : 5,
   "reportUrl" : "../5/index.html",
   "reportName" : "default",
-  "data" : { }
+  "data" : {
+    "Product defects" : 10
+  }
 }, {
   "buildOrder" : 4,
   "reportUrl" : "../4/index.html",
   "reportName" : "default",
-  "data" : { }
+  "data" : {
+    "Product defects" : 12
+  }
 }, {
   "buildOrder" : 3,
   "reportUrl" : "../3/index.html",
   "reportName" : "default",
-  "data" : { }
+  "data" : {
+    "Product defects" : 13
+  }
 } ]

@@ -25,10 +25,10 @@ public class PDF_Extractor {
 	private ArrayList<File> pdfFileList;
 	/** List of PDF files that need to be extracted into the CSV file. */
 	private ArrayList<File> pdfFileToBeExtractedList;
-	/** Character or string to be used as a delimiter for the CSV file*/
+	/** Character or string to be used as a delimiter for the CSV file */
 	private final String DELIMITER = ";";
-	/**Path to the INI configuration file.*/
-	private final String CONFIG = "config.ini";
+	/** Path to the INI configuration file. */
+	private final String CONFIG = "assets/config.ini";
 
 	/**
 	 * Creates a PDF_Extractor object, used to extract specific metadata from PDF
@@ -38,11 +38,13 @@ public class PDF_Extractor {
 		Wini ini;
 		try {
 			ini = new Wini(new File(CONFIG));
-			 directoryPath = new File(ini.get("Paths", "simpleFilesPath"));
-			 csvPath = new File(ini.get("Paths", "csvPath"));
+			directoryPath = new File(ini.get("Paths", "simpleFilesPath"));
+			csvPath = new File(ini.get("Paths", "csvPath"));
 		} catch (Exception e) {
-			System.out.println("Error while trying to read ini file. Could not start the path variables.");
-		}		
+			System.out.println("Error while trying to read ini file. Could not start the path variables.\n");
+			System.out.println("Directory path: " + directoryPath);
+			System.out.println("CSV path: " + csvPath);
+		}
 		pdfFileList = new ArrayList<File>();
 		pdfFileToBeExtractedList = new ArrayList<File>();
 	}
@@ -51,22 +53,32 @@ public class PDF_Extractor {
 	 * Checks to see if the CSV file exists, and creates it if it doesn't.
 	 */
 	public void createCSVIfNotExist() {
-		if (!(csvPath.exists())) {
-			try {
+		try {
+			if (!(csvPath.exists())) {
 				csvPath.createNewFile();
-			} catch (IOException e) {
-				System.out.println("Could not create CSV file, despite it not existing.");
 			}
+		} catch (Exception e) {
+			System.out.println(
+					"Could not create CSV file. Verify if the config.ini file is properly defined on the directory on which you are trying to run this service.");
 		}
+
 	}
 
 	/** Generates a list of the PDF files in the directory. */
 	public void populateFilesList() {
-		for (File fileEntry : directoryPath.listFiles()) {
-			if (fileEntry.exists() && !fileEntry.isDirectory() && fileEntry.getName().endsWith(".pdf")) {
-				pdfFileList.add(fileEntry);
-				System.out.println("File exists in directory: " + fileEntry.getName());
+		try {
+			for (File fileEntry : directoryPath.listFiles()) {
+				if (fileEntry.exists() && !fileEntry.isDirectory() && fileEntry.getName().endsWith(".pdf")) {
+					pdfFileList.add(fileEntry);
+					System.out.println("File exists in directory: " + fileEntry.getName());
+				}
 			}
+		} catch (Exception e) {
+			System.out.println(
+					"Couldn't access PDF files. Verify if the path to the directory is properly set on the config.ini, and if said file is present onthe directory from which you are trying to run this service.");
+			System.out.println("Directory: " + directoryPath);
+			System.out.println("CSV: " + csvPath);
+			System.out.println("Working Directory = " + System.getProperty("user.dir"));
 		}
 	}
 
@@ -77,8 +89,9 @@ public class PDF_Extractor {
 	 */
 	public void deleteUnexistentFilesFromCSV() {
 		String row;
-		File tempFile = new File(csvPath.getAbsolutePath().replaceAll(csvPath.getName(), "tempFile"));
+		File tempFile = null;
 		try {
+			tempFile = new File(csvPath.getAbsolutePath().replaceAll(csvPath.getName(), "tempFile"));
 			int count = 0;
 			BufferedReader csvReader = new BufferedReader(new FileReader(csvPath.getAbsolutePath()));
 			BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
@@ -101,11 +114,12 @@ public class PDF_Extractor {
 			}
 			writer.close();
 			csvReader.close();
-		} catch (Exception e) {
-			System.out.println("An error occurred while trying to detected deleted files.");
-		}finally {
 			csvPath.delete();
-			tempFile.renameTo(csvPath);
+			if (tempFile != null)
+				tempFile.renameTo(csvPath);
+		} catch (Exception e) {
+			System.out.println(
+					"An error occurred while trying to detected deleted files. Verify if the path to the directory is properly set on the config.ini, and if said file is present onthe directory from which you are trying to run this service.\n");
 		}
 	}
 
@@ -137,7 +151,7 @@ public class PDF_Extractor {
 			pdfFileToBeExtractedList.removeAll(filesThatExistInTheCSV);
 
 		} catch (Exception e) {
-			System.out.println("Could not find the CSV file, or could not read from said file.");
+			System.out.println("Could not find the CSV file, or could not read from said file.\n");
 		}
 	}
 
@@ -184,7 +198,8 @@ public class PDF_Extractor {
 			}
 			csvWriter.close();
 		} catch (Exception e) {
-			System.out.println("Error while trying to extract PDF metadata.");
+			System.out.println("Error while trying to extract PDF metadata.\n");
+			e.printStackTrace();
 		}
 	}
 
@@ -206,11 +221,11 @@ public class PDF_Extractor {
 			result = extractor.getContentAsNLM();
 			System.out.println("DONE.");
 		} catch (AnalysisException e) {
-			System.out.println("Something went wrong with the analysis of the PDF file.");
+			System.out.println("Something went wrong with the analysis of the PDF file.\n");
 		} catch (FileNotFoundException e) {
 			System.out.println("File was not found.");
-		} catch (IOException e) {
-			System.out.println("Something went wrong while trying to open the PDF file.");
+		} catch (Exception e) {
+			System.out.println("Something went wrong while trying to open the PDF file.\n");
 		}
 		return result;
 	}
@@ -236,15 +251,15 @@ public class PDF_Extractor {
 		}
 		return authorString;
 	}
-	
+
 	public ArrayList<File> getPdfFileList() {
 		return pdfFileList;
 	}
-	
+
 	public File getCSVPath() {
 		return csvPath;
 	}
-	
+
 	public ArrayList<File> getPdfFileToBeExtractedList() {
 		return pdfFileToBeExtractedList;
 	}

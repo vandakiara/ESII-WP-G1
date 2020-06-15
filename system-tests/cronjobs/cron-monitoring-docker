@@ -1,0 +1,2 @@
+0 */2 * * * cd /workspace/ && mvn test
+# An empty line is needed at the end of the cron file for it to be valid
