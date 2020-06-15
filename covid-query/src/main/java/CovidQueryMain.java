@@ -1,4 +1,6 @@
 
+import java.io.IOException;
+
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.TransportException;
@@ -11,7 +13,7 @@ import io.vertx.ext.web.handler.BodyHandler;
 /**
  * ISCTE-IUL -> ES2 -> 2019/2020
  * @author jmalo1 (Joao Louro )
- * Nº Aluno 82544
+ * Nï¿½ Aluno 82544
  * Grupo 1 * 
  *
  */
@@ -22,16 +24,10 @@ public class CovidQueryMain {
 	public static void main(String[] args) {
 		//creates cgit for git connection and clones repository
 		ConnectGit cgit = new ConnectGit();
+		
 		try {
 			cgit.cloneRepo();
-		} catch (InvalidRemoteException e) {
-			System.out.println("1");
-			e.printStackTrace();
-		} catch (TransportException e) {
-			System.out.println("2");
-			e.printStackTrace();
-		} catch (GitAPIException e) {
-			System.out.println("3");
+		} catch (GitAPIException | IOException e) {
 			e.printStackTrace();
 		}
 
