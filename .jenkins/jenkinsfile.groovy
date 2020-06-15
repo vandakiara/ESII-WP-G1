@@ -13,7 +13,10 @@ pipeline {
     }
     stages {
         stage('Clean workspace') {
-            cleanWs()
+            steps {
+                echo 'Cleaning the workspace'
+                cleanWs()
+            }
         }
         stage('Generate app jars') {
             steps {
