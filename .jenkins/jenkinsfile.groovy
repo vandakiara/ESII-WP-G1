@@ -46,6 +46,9 @@ pipeline {
                 dir('covid-sci-discoveries') {
                     sh "docker build -t covid-sci-discoveries:0.0.1 target/"
                 }
+                dir('system-tests') {
+                    sh "docker build -t vandabarataiscte/test-docker:1.0 ."
+                }
             }
         }
         stage('Start docker-compose WP') {
