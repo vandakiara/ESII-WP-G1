@@ -24,6 +24,7 @@ public class CovidQueryMain {
 		
 		Properties properties = System.getProperties();
 		properties.setProperty("vertx.disableFileCaching", "true");
+		properties.setProperty("vertx.disableFileCPResolving", "true");
 
 		//creates cgit for git connection and clones repository
 		ConnectGit cgit = new ConnectGit();
