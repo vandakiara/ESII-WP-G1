@@ -26,8 +26,8 @@ Em vez de fazer manualmente todos os passos demonstrados anteriormente, pode sim
 ![Jenkins Pipeline](https://i.ibb.co/ryMnzhH/Jenkins-WP-config.png)
 
 Para correr tudo bem, certifique-se que não tem os containers docker a correr anteriormente e que usa a versão 3.6.3 do maven.
-
-#### Para iniciar sessão no Wordpress pode criar uma conta ou iniciar com os perfis já criados:
+___
+### Para iniciar sessão no Wordpress pode criar uma conta ou iniciar com os perfis já criados:
 **Administrator**
 * **Username**: admin
 * **Password**: admin
