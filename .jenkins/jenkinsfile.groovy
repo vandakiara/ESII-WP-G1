@@ -12,12 +12,6 @@ pipeline {
         maven 'maven 3.6.3'
     }
     stages {
-        stage('Clean workspace') {
-            steps {
-                echo 'Cleaning the workspace'
-                cleanWs()
-            }
-        }
         stage('Generate app jars') {
             steps {
                 dir('covid-evolution-diff') {
