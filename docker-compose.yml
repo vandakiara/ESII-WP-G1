@@ -29,6 +29,7 @@ services:
   db:
     container_name: mysql
     image: mysql:5.7
+    command: --innodb-use-native-aio=0
     restart: always
     environment:
       MYSQL_DATABASE: wordpress
@@ -65,11 +66,21 @@ services:
       - wp_network
       
   # JAVA COVID-GRAPH-SPREAD
-  java-covid-graph-spread:
-    container_name: java-covid-graph-spread
-    image: covid-graph-spread:0.0.1
+  # java-covid-graph-spread:
+    # container_name: java-covid-graph-spread
+    # image: covid-graph-spread:0.0.1
+    # ports:
+      # - 3001:3001
+    # networks:
+      # - wp_network
+      
+      
+  # JAVA COVID_QUERY
+  java-covid-query:
+    container_name: java-covid-query
+    image: covid-query:0.0.1
     ports:
-      - 3001:3001
+      - 3003:3003
     networks:
       - wp_network
 

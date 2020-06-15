@@ -20,12 +20,12 @@
 		<dependency>
 			<groupId>io.vertx</groupId>
 			<artifactId>vertx-core</artifactId>
-			<version>3.5.4</version>
+			<version>3.9.1</version>
 		</dependency>
 		<dependency>
 			<groupId>io.vertx</groupId>
 			<artifactId>vertx-web</artifactId>
-			<version>3.5.4</version>
+			<version>3.9.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jgit</groupId>
@@ -125,30 +125,9 @@
 							</resources>
 						</configuration>
 					</execution>
-					<!-- Copy base html template file -->
-					<execution>
-						<id>resources-html</id>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}/src</outputDirectory>
-							<resources>
-								<resource>
-									<directory>src</directory>
-									<filtering>true</filtering>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
+					
 				</executions>
 			</plugin>
-			
-			
-
-			
-			
 			
 		</plugins>
 
