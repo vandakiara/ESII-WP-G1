@@ -6,8 +6,6 @@ import java.util.Properties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import pt.iscte.esii.ConnGit;
-
 class CovidQueryMainTest {
 
 	@BeforeEach
