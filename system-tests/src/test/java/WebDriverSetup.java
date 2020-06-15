@@ -79,7 +79,7 @@ public class WebDriverSetup {
 
         // setup mailslurp
         mailslurpClient = getDefaultApiClient();
-        mailslurpClient.setApiKey("cbc94c8b0bce654884c7f4b443f9cec3a00f62d4a864cb2d99a6ec77490e6c06");
+        mailslurpClient.setApiKey("90145077217b5625ca5b9f3e964ae5eae2816144ec264139d698be13b1cb1ea0");
         mailslurpClient.setConnectTimeout(100000);
 
         // create a real, randomized email address with MailSlurp to represent a user
