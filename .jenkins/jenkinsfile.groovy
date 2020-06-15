@@ -32,14 +32,6 @@ pipeline {
                 }
             }
         }
-        stage('Run system tests') {
-            steps {
-                dir('system-tests') {
-                    echo 'Running system tests on the WP pages'
-                    sh 'mvn test'
-                }
-            }
-        }
         stage('Build app docker images') {
             steps {
                 dir('covid-evolution-diff') {
