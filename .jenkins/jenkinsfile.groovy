@@ -12,6 +12,9 @@ pipeline {
         maven 'maven 3.6.3'
     }
     stages {
+        stage('Clean workspace') {
+            cleanWs()
+        }
         stage('Generate app jars') {
             steps {
                 dir('covid-evolution-diff') {
