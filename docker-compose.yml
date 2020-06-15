@@ -65,6 +65,15 @@ services:
     networks:
       - wp_network
 
+  # JAVA COVID_QUERY
+  java-covid-query:
+    container_name: java-covid-query
+    image: covid-query:0.0.1
+    ports:
+      - 3003:3003
+    networks:
+      - wp_network
+
   # JAVA COVID-SCI-DISCOVERIES
   java-covid-sci-discoveries:
     container_name: java-covid-sci-discoveries

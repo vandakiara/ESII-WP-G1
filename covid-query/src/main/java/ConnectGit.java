@@ -1,6 +1,4 @@
-
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import org.eclipse.jgit.api.Git;
@@ -17,6 +15,14 @@ import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.TreeWalk;
 import org.eclipse.jgit.treewalk.filter.PathFilter;
 
+/**
+ * ISCTE-IUL -> ES2 -> 2019/2020
+ * @author jmalo1 (Joao Louro )
+ * Nº Aluno 82544
+ * Grupo 1 * 
+ *
+ */
+
 public class ConnectGit {
 
 	final String REMOTE_URL = "https://github.com/vbasto-iscte/ESII1920.git";
@@ -26,8 +32,10 @@ public class ConnectGit {
 	Git git;
 	File covFile;
 
-
+	//Clones Git repository and retrieves covid19spreading.rdf from head
 	public void cloneRepo() throws InvalidRemoteException, TransportException, GitAPIException {
+
+
 		File localPathFile = null;
 
 		try {
@@ -51,8 +59,7 @@ public class ConnectGit {
 			RevWalk revWalk = new RevWalk(repository);
 			RevCommit commit = revWalk.parseCommit(lastCommitId);
 			// and using commit's tree find the path
-			RevTree tree = commit.getTree();
-			
+			RevTree tree = commit.getTree();			
 
 			// now try to find a specific file
 			try {
@@ -66,13 +73,13 @@ public class ConnectGit {
 
 				ObjectId objectId = treeWalk.getObjectId(0);
 				ObjectLoader loader = repository.open(objectId);
-				
+
 				// and then one can the loader to read the file
 				File myfile = new File(FILE_PATH);
 				FileOutputStream stream = new FileOutputStream(myfile);
-		        loader.copyTo(stream);		        
-		        covFile = myfile;
-					
+				loader.copyTo(stream);		        
+				covFile = myfile;
+
 			}catch (Exception e) {
 				// TODO: handle exception
 			}
@@ -86,6 +93,7 @@ public class ConnectGit {
 
 	}
 	
+	// returns covid19spread.rdf file
 	public File getCovFile() {
 		return covFile;
 	}
