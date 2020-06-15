@@ -30,6 +30,10 @@ pipeline {
                     echo 'Generating jar and Dockerfile for covid-sci-discoveries'
                     sh 'mvn clean package'
                 }
+                dir('system-tests') {
+                    echo 'Running system tests on the WP pages'
+                    sh 'mvn test'
+                }
             }
         }
         stage('Build app docker images') {
