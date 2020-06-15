@@ -1,9 +1,8 @@
 
 import java.io.IOException;
+import java.util.Properties;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.InvalidRemoteException;
-import org.eclipse.jgit.api.errors.TransportException;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.ext.web.Router;
@@ -22,6 +21,10 @@ import io.vertx.ext.web.handler.BodyHandler;
 public class CovidQueryMain {	
 
 	public static void main(String[] args) {
+		
+		Properties properties = System.getProperties();
+		properties.setProperty("vertx.disableFileCaching", "true");
+
 		//creates cgit for git connection and clones repository
 		ConnectGit cgit = new ConnectGit();
 		

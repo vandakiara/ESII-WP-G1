@@ -1,18 +1,9 @@
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.Properties;
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class CovidQueryMainTest {
-
-	@BeforeEach
-	void setUp() throws Exception {
-		Properties properties = System.getProperties();
-		properties.setProperty("vertx.disableFileCaching", "true");
-	}
 
 	@Test
 	void testMain() {
