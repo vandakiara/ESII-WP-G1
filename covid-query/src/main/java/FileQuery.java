@@ -17,7 +17,7 @@ import org.xml.sax.SAXException;
 /**
  * ISCTE-IUL -> ES2 -> 2019/2020
  * @author jmalo1 (Joao Louro )
- * Nº Aluno 82544
+ * Nï¿½ Aluno 82544
  * Grupo 1 * 
  *
  */
@@ -63,9 +63,7 @@ public class FileQuery {
 			dBuilder = dbFactory.newDocumentBuilder();
 			try {
 				doc = dBuilder.parse(inputFile);
-			} catch (SAXException e) {	
-				e.printStackTrace();
-			} catch (IOException e) {				
+			} catch (Exception e) {				
 				e.printStackTrace();
 			}
 			doc.getDocumentElement().normalize();
