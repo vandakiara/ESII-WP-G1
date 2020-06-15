@@ -46,9 +46,9 @@ class TestHtmlCovidTableBuilder {
 		assertEquals(1, StringUtils.countMatches(html, "Tag Description 1"));
 		assertEquals(1, StringUtils.countMatches(html, "Tag Description 2"));
 		assertEquals(1, StringUtils.countMatches(html, "Tag Description 3"));
-		assertEquals(1, StringUtils.countMatches(html, "Spread Visualization Link 1"));
-		assertEquals(1, StringUtils.countMatches(html, "Spread Visualization Link 2"));
-		assertEquals(1, StringUtils.countMatches(html, "Spread Visualization Link 3"));
+		assertEquals(2, StringUtils.countMatches(html, "Spread Visualization Link 1"));
+		assertEquals(2, StringUtils.countMatches(html, "Spread Visualization Link 2"));
+		assertEquals(2, StringUtils.countMatches(html, "Spread Visualization Link 3"));
 
 
 	}

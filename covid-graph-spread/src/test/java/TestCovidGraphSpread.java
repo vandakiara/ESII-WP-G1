@@ -28,6 +28,8 @@ class TestCovidGraphSpread {
 	
 	@Test
 	void testHasNewTag() {
+		graph.connectionGit();
+		String tableHtml = graph.buildTableHtml();
 		/**
 		 * After building a page html, you're able to
 		 * retrieve it again later without rebuilding it
