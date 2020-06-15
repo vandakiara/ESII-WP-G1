@@ -153,7 +153,7 @@ public class HTMLTableBuilder {
 				for (String value : values) {
 					if (counter == 0) {
 						stringBuilder.append(COLUMN_START);
-						stringBuilder.append("<a target=\"_blank\" href=\"" + hrefPath + "\\" + filename + "\">");
+						stringBuilder.append("<a target=\"_blank\" href=\"" + hrefPath + "/" + filename + "\">");
 						stringBuilder.append(value);
 						stringBuilder.append("</a>");
 						stringBuilder.append(COLUMN_END);
