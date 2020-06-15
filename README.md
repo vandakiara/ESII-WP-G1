@@ -1,7 +1,6 @@
 # Engenharia de Software II - Grupo 1
 
 ## Setup
-
 Inicialmente, é necessário carregar as imagens das aplicações Java, que se encontram compactadas no diretório `docker-images/`. Para isso, deverá correr os seguintes comandos, a partir da raiz do projeto:
 
 ```sh
@@ -22,7 +21,13 @@ Agora, poderá aceder à aplicação em [http://localhost:8080](http://localhost
 
 **Nota:** Apesar do docker-toolbox usar um IP específico ao invés de localhost, o endereço do wordpress em si está como localhost pelo que recomendamos correr numa máquina que suporte docker desktop, ou que corra linux ou mac, para que tudo funcione a 100%.
 
-### Para iniciar sessão no Wordpress pode criar uma conta ou iniciar com os perfis já criados:
+## Alternativa - setup via Jenkins
+Em vez de fazer manualmente todos os passos demonstrados anteriormente, pode simplesmente configurar o Jenkins da seguinte forma:
+![Jenkins Pipeline](https://i.ibb.co/ryMnzhH/Jenkins-WP-config.png)
+
+Para correr tudo bem, certifique-se que não tem os containers docker a correr anteriormente e que usa a versão 3.6.3 do maven.
+
+#### Para iniciar sessão no Wordpress pode criar uma conta ou iniciar com os perfis já criados:
 **Administrator**
 * **Username**: admin
 * **Password**: admin
