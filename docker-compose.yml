@@ -70,7 +70,7 @@ services:
     container_name: java-covid-sci-discoveries
     image: covid-sci-discoveries:0.0.1
     environment:
-      - JVM_OPTS=-Xmx12g -Xms12g -XX:MaxPermSize=4096m
+      - JVM_OPTS=-Xmx12g -Xms12g -XX:MaxPermSize=200m
     volumes:
       - ./wordpress/wp-content/uploads/simple-file-list:/simple-file-list
     ports:
